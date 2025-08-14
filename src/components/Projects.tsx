@@ -254,20 +254,98 @@ const ProjectsSection: React.FC = () => {
       id="projects"
       className={`${
         darkMode ? "bg-gray-900" : "bg-white"
-      } transition-colors duration-500 py-14 sm:py-16 md:py-20`}
+      } transition-colors relative duration-500 py-14 sm:py-16 md:py-20`}
     >
+
+      {/* ======= CORNER GLOWS ======= */}
+      <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+        <style>{`
+    .about-glow{
+      position:absolute;
+      width:28rem;height:28rem;
+      filter:blur(40px);
+      opacity:.30;
+      will-change:transform,opacity;
+      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
+    }
+    @media (min-width:768px){
+      .about-glow{width:44rem;height:44rem}
+    }
+  `}</style>
+
+        {/* top-left */}
+        <span
+          className="about-glow"
+          style={{
+            left: "-20rem",
+            top: "-5rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(59,130,246,0.85)"
+              : "rgba(59,130,246,0.5)",
+          }}
+        />
+        {/* top-right */}
+        {/* <span
+          className="about-glow"
+          style={{
+            right: "-10rem",
+            top: "-20rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(168,85,247,0.8)"
+              : "rgba(168,85,247,0.55)",
+          }}
+        /> */}
+        {/* bottom-left */}
+        {/* <span
+          className="about-glow"
+          style={{
+            left: "-14rem",
+            bottom: "-18rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(59,130,246,0.85)"
+              : "rgba(59,130,246,0.5)",
+          }}
+        /> */}
+        {/* bottom-right */}
+        <span
+          className="about-glow"
+          style={{
+            right: "-20rem",
+            bottom: "-5rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
+          }}
+        />
+      </div>
+      {/* ======= /CORNER GLOWS ======= */}
+
       <div className="container mx-auto px-5 md:px-10 max-w-screen-xl">
         {/* Head */}
         <div className="text-center">
           <h2
             className={`section-title text-4xl md:text-6xl font-extrabold ${
               darkMode ? "text-white" : "text-gray-900"
+            } mb-4`}
+          >
+            <span className="relative inline-block">
+              My{" "}
+              <span className={darkMode ? "text-[#FF2D55]" : "text-[#FF2D55]"}>
+                Project
+              </span>
+              <span
+                className={`absolute -bottom-1 z-[-1] left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${
+                  darkMode ? "via-red-400" : "via-red-400"
+                } to-transparent mt-2`}
+              />
+            </span>
+          </h2>
+          <p
+            className={`section-subtitle text-lg ${
+              darkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >
-            My <span className="text-[#FF2D55]">Projects</span>
-          </h2>
-          <p className={`${darkMode ? "text-gray-400" : "text-gray-600"} mt-2`}>
-            Landscape Coverflow Carousel (arrows + autoplay)
+            Dive Into My Work
           </p>
         </div>
 
