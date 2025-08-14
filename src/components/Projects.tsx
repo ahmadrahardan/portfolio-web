@@ -4,14 +4,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
 
-import BlindSonic from "../assets/Rahardan_.png";
-import TourHomie from "../assets/Rahardan_.png";
-import Maenklung from "../assets/Rahardan_.png";
-import Innovixus from "../assets/Rahardan_.png";
-import PakTelang from "../assets/Rahardan_.png";
-import Profile from "../assets/Rahardan_.png";
-import ApiIndo from "../assets/Rahardan_.png";
-import Progress from "../assets/Rahardan_.png";
+import Simbako from "../assets/Simbako.webp";
+import Sepadu from "../assets/Sepadu.webp";
+import ITC from "../assets/ITC.webp";
+import Portfolio from "../assets/Portfolio.webp";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -38,104 +34,47 @@ const ProjectsSection: React.FC = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: "Blind Sonic",
+      title: "Simbako",
       description:
-        "Blind Sonic adalah aplikasi game interaktif untuk penyandang tunanetra yang memanfaatkan teknologi audio. Pengguna dapat menjelajahi dunia virtual melalui suara dan kontrol sederhana.",
-      image: BlindSonic,
-      role: "UI/UX Designer",
-      technologies: ["Figma", "Adobe Ilustrator"],
-      color: "#6A0DAD",
-      demoLink:
-        "https://www.figma.com/proto/3TuOq7jwQiX3rp5QiBumnp/Blind-Sonic---Game-untuk-Penyandang-Tunanetra?node-id=201-15&t=OdIdqIQEDEOmurhk-1",
+        "Simbako is a training and education submission system for the tobacco industry in Jember, designed to facilitate training applications and enhance industry knowledge.",
+      image: Simbako,
+      role: "Fullstack Developer",
+      technologies: ["Laravel", "PHP", "Tailwind"],
+      color: "#FF2D55",
+      githubLink: "https://github.com/ahmadrahardan/simbako",
     },
     {
       id: 2,
-      title: "InnoVixus",
+      title: "Sepadu",
       description:
-        "InnoVixus adalah sistem manajemen toko dan e-commerce terintegrasi yang dirancang untuk membantu pelaku usaha khususnya UMKM mengelola aktivitas operasional toko secara efisien, cerdas, dan modern.",
-      image: Innovixus,
+        "Sepadu is an integrated training system for industries in Jember Regency, designed to help business owners submit training requests to the Department of Trade and Industry.",
+      image: Sepadu,
       role: "Fullstack Developer",
-      technologies: ["Laravel", "PHP", "Tailwind", "AJAX"],
-      color: "#003B73",
-      githubLink: "https://github.com/ChieJuwonsFx/Belajar-PWEB",
+      technologies: ["Laravel", "PHP", "Tailwind"],
+      color: "#FF2D55",
+      githubLink: "https://github.com/ahmadrahardan/sepadu",
     },
     {
       id: 3,
-      title: "Pak Telang",
+      title: "IT Convert",
       description:
-        "Prelovedia adalah platform online berbasis website yang didedikasikan untuk jual beli barang bekas berkualitas. Pengguna dapat dengan mudah dan aman menjual serta membeli berbagai jenis barang preloved.",
-      image: PakTelang,
-      role: "Designer",
-      technologies: ["Figma", "Laravel", "React"],
-      color: "#C39BD3",
-      demoLink: "https://paktelang.up.railway.app/",
+        "IT Convert is a website by the Information Systems Student Association for participating in and submitting competition proposals in the field of Information and Communication Technology.",
+      image: ITC,
+      role: "Fullstack Developer",
+      technologies: ["Laravel", "PHP", "Tailwind"],
+      color: "#FF2D55",
+      githubLink: "https://itconvert.himasif.id/",
     },
     {
       id: 4,
-      title: "Tour Homie",
+      title: "Profile Website",
       description:
-        "TourHomie adalah aplikasi yang membantu wisatawan asing menemukan destinasi wisata sesuai preferensi mereka, menyediakan informasi tentang tempat wisata, kuliner, budaya lokal.",
-      image: TourHomie,
-      role: "UI/UX Designer",
-      technologies: ["React Native", "Firebase", "Maps API"],
-      color: "#8CBEDD",
-      demoLink:
-        "https://www.figma.com/proto/cxxXYJScbiqSmLs6doQtJX/TRAM---TourHomie?node-id=0-1&t=I1pRL1NwgsJGcXzJ-1",
-    },
-    {
-      id: 5,
-      title: "MAÉNKLUNG",
-      description:
-        "MAÉNKLUNG adalah platform web interaktif yang mengenalkan Angklung alat musik tradisional Indonesia melalui pendekatan digital…",
-      image: Maenklung,
-      role: "UI/UX Designer",
-      technologies: ["HTML", "CSS", "JavaScript"],
-      color: "#A0522D",
-      githubLink: "https://github.com/ChieJuwonsFx/MAENKLUNG",
-      demoLink: "https://maenklung.vercel.app/",
-    },
-    {
-      id: 6,
-      title: "API Wilayah Indonesia",
-      description:
-        "Sebuah API yang menyajikan data hierarki wilayah Indonesia mulai dari kabupaten/kota, kecamatan, hingga kelurahan…",
-      image: ApiIndo,
-      role: "Developer",
-      technologies: ["JavaScript"],
-      color: "#3498DB",
-      githubLink: "https://github.com/ChieJuwonsFx/api-wilayah-indonesia",
-      demoLink: "https://chiejuwonsfx.github.io/api-wilayah-indonesia/",
-    },
-    {
-      id: 7,
-      title: "Web Portofolio",
-      description:
-        "Website portofolio pribadi untuk menampilkan profil, proyek, skills, pengalaman, dan pencapaian.",
-      image: Profile,
+        "A personal portfolio website designed to showcase personal profile, completed projects, technical skills, and organizational experience.",
+      image: Portfolio,
       role: "Front-End Developer",
       technologies: ["React", "Tailwind"],
-      color: "#2980B9",
-      githubLink: "https://github.com/ChieJuwonsFx/web-profile",
-      demoLink: "https://richie-olajuwon-santoso.vercel.app/",
-    },
-    {
-      id: 8,
-      title: "CitaNext",
-      description: "Pusat informasi lomba, magang, dan beasiswa.",
-      image: Progress,
-      role: "Fullstack Developer",
-      technologies: ["Next", "React", "Tailwind"],
-      color: "#2980B9",
-    },
-    {
-      id: 9,
-      title: "Eatsential",
-      description:
-        "Platform untuk mengetahui kandungan gizi & memantau konsumsi harian.",
-      image: Progress,
-      role: "Fullstack Developer",
-      technologies: ["Next", "React", "Tailwind"],
-      color: "#2980B9",
+      color: "#FF2D55",
+      githubLink: "https://github.com/ahmadrahardan/portfolio-web",
     },
   ];
 
@@ -187,20 +126,20 @@ const ProjectsSection: React.FC = () => {
   }, [projects.length]);
 
   // autoplay
-  useEffect(() => {
-    const AUTOPLAY_MS = 3500;
-    const id = setInterval(() => {
-      if (!pausedRef.current) setActive((i) => (i + 1) % projects.length);
-    }, AUTOPLAY_MS);
-    const onVisibility = () => {
-      pausedRef.current = document.hidden || pausedRef.current;
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      clearInterval(id);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [projects.length]);
+  // useEffect(() => {
+  //   const AUTOPLAY_MS = 3500;
+  //   const id = setInterval(() => {
+  //     if (!pausedRef.current) setActive((i) => (i + 1) % projects.length);
+  //   }, AUTOPLAY_MS);
+  //   const onVisibility = () => {
+  //     pausedRef.current = document.hidden || pausedRef.current;
+  //   };
+  //   document.addEventListener("visibilitychange", onVisibility);
+  //   return () => {
+  //     clearInterval(id);
+  //     document.removeEventListener("visibilitychange", onVisibility);
+  //   };
+  // }, [projects.length]);
 
   const pause = () => (pausedRef.current = true);
   const resume = () => (pausedRef.current = false);
@@ -256,7 +195,6 @@ const ProjectsSection: React.FC = () => {
         darkMode ? "bg-gray-900" : "bg-white"
       } transition-colors relative duration-500 py-14 sm:py-16 md:py-20`}
     >
-
       {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
         <style>{`
@@ -451,54 +389,59 @@ const ProjectsSection: React.FC = () => {
 
                   <div
                     className={`relative z-10 w-full h-full rounded-2xl overflow-hidden border
-                      ${
-                        darkMode
-                          ? "bg-[#111827] border-white/10"
-                          : "bg-white border-gray-200"
-                      }
-                      ${isCenter ? "shadow-2xl" : "shadow-lg"}`}
+    ${darkMode ? "bg-[#111827] border-white/10" : "bg-white border-gray-200"}
+    ${isCenter ? "shadow-2xl" : "shadow-lg"}`}
                   >
                     <img
                       src={p.image}
                       alt={p.title}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
                     <div
                       className="absolute inset-0"
                       style={{ boxShadow: `inset 0 0 120px rgba(0,0,0,.35)` }}
                     />
 
-                    <div className="absolute inset-y-0 left-0 p-5 sm:p-6 md:p-8 flex flex-col justify-end max-w-[75%] sm:max-w-[70%]">
+                    {/* Role & Technologies di pojok kiri atas */}
+                    <div className="absolute top-0 left-0 p-5 sm:p-6 md:p-8 flex flex-col gap-2 z-20">
                       <span
-                        className="px-3 py-1 w-max rounded-full text-xs text-white shadow mb-3"
+                        className="px-3 py-1 w-max rounded-full text-xs text-white shadow"
                         style={{ backgroundColor: p.color }}
                       >
                         {p.role}
                       </span>
-                      <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold">
-                        {p.title}
-                      </h3>
-                      <p className="text-white/85 mt-2 text-sm md:text-base line-clamp-3">
-                        {p.description}
-                      </p>
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      
+                    </div>
+
+                    <div className="absolute top-0 right-0 p-5 sm:p-6 md:p-8 flex flex-col gap-2 z-20">
+                      <div className="flex flex-wrap gap-2">
                         {p.technologies.map((t, idx) => (
                           <span
                             key={idx}
-                            className="bg-white/15 text-white/90 px-3 py-1 rounded-full text-xs backdrop-blur"
+                            className="bg-white/35 text-white/90 px-3 py-1 rounded-full text-xs backdrop-blur"
                           >
                             {t}
                           </span>
                         ))}
                       </div>
-                      <div className="mt-4 flex gap-3">
+                    </div>
+
+                    {/* Title & Description tetap di bawah */}
+                    <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 md:p-8 flex flex-col justify-end max-w-[90%] sm:max-w-[90%]">
+                      <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold">
+                        {p.title}
+                      </h3>
+                      <p className="text-white/85 text-sm md:text-base line-clamp-3">
+                        {p.description}
+                      </p>
+                      <div className="mt-2 flex gap-3">
                         {p.githubLink && (
                           <a
                             href={p.githubLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-white/15 hover:bg-white/25 text-white px-4 py-2 rounded-md text-sm font-medium backdrop-blur"
+                            className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium backdrop-blur"
                             onClick={(e) => e.stopPropagation()}
                           >
                             View Code
@@ -519,7 +462,7 @@ const ProjectsSection: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* INNER GLOW only active (kurangi intensitas di mobile) */}
+                    {/* Inner glow */}
                     {isCenter && (
                       <div
                         className="pointer-events-none absolute inset-0 rounded-2xl"

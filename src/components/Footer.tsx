@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
           {[
             {
               name: "LinkedIn",
-              href: "https://www.linkedin.com/in/richie-olajuwon-santoso",
+              href: "",
               icon: (
                 <svg
                   width="24"
@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
             },
             {
               name: "GitHub",
-              href: "https://github.com/ChieJuwonsFx",
+              href: "https://github.com/ahmadrahardan",
               icon: (
                 <svg
                   width="24"
@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
             [
               {
                 name: "Instagram",
-                href: "https://www.instagram.com/rchieee__/",
+                href: "https://www.instagram.com/rahardan_/",
                 icon: (
                   <svg
                     width="24"
@@ -136,7 +136,7 @@ const Footer: React.FC = () => {
               },
               {
                 name: "Email",
-                href: "mailto:richieolajuwons@gmail.com",
+                href: "mailto:rahardan313@gmail.com",
                 icon: (
                   <svg
                     width="24"

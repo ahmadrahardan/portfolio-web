@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
 import profilePhoto from "../assets/RHD.jpg";
-// import cvPdf from "../assets/Richie_Olajuwon_CV.pdf";
+import cvPdf from "../assets/Rahar_3.png";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -14,11 +14,12 @@ const HomeSection = () => {
   const { darkMode } = useTheme();
 
   const handleDownload = () => {
-    const a = document.createElement("a");
-    a.download = "Richie_Olajuwon_CV.pdf";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const link = document.createElement('a');
+    link.href = cvPdf;
+    link.download = 'Rahar_3.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   useEffect(() => {
@@ -36,8 +37,8 @@ const HomeSection = () => {
         "-=0.7"
       );
     }, sectionRef);
-    return () => ctx.revert(); 
-  }, [darkMode]); 
+    return () => ctx.revert();
+  }, [darkMode]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -109,7 +110,6 @@ const HomeSection = () => {
       id="home"
       className="relative isolate min-h-screen overflow-hidden flex items-center"
     >
-
       <div
         className={`absolute inset-0 -z-30 bg-gradient-to-br ${
           darkMode
@@ -135,7 +135,7 @@ const HomeSection = () => {
             ref={textRef}
             className="lg:col-span-6 flex flex-col items-center text-center lg:items-start lg:text-left"
           >
-            <p className="mb-4 text-xs sm:text-sm tracking-[.18em] font-semibold text-white">
+            <p className="mb-4 text-md sm:text-2xl tracking-[.18em] font-semibold text-white">
               HELLO THERE, I'M
             </p>
 
@@ -150,8 +150,8 @@ const HomeSection = () => {
             <div className="mt-7 flex flex-wrap items-center gap-3 justify-center lg:justify-start">
               <button
                 onClick={handleDownload}
-                className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium
-                          bg-[#FF2D55] text-white shadow-md hover:shadow-lg hover:brightness-110 transition"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-lg font-medium
+                          bg-[#FF2D55] text-white shadow-lg hover:shadow-xl hover:bg-white hover:text-[#FF2D55] transition"
               >
                 Download CV
               </button>
@@ -159,10 +159,17 @@ const HomeSection = () => {
           </div>
 
           {/* RIGHT: photo (floating) */}
-          <div ref={photoRef} className="lg:col-span-6 flex justify-center lg:justify-end">
+          <div
+            ref={photoRef}
+            className="lg:col-span-6 flex justify-center lg:justify-end"
+          >
             <div className="relative">
               <div className="p-[6px] rounded-[26px] bg-gradient-to-br from-[#FF2D55] via-[#ff7ab7] to-[#2563eb]">
-                <div className={`rounded-[20px] overflow-hidden ${darkMode ? "bg-[#0F1530]" : "bg-white/10"}`}>
+                <div
+                  className={`rounded-[20px] overflow-hidden ${
+                    darkMode ? "bg-[#0F1530]" : "bg-white/10"
+                  }`}
+                >
                   <img
                     src={profilePhoto}
                     alt="Profile"
@@ -182,6 +189,16 @@ const HomeSection = () => {
           </div>
         </div>
       </div>
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-5 md:h-8 z-[5]"
+        style={{
+          background: darkMode
+            ? 
+              "linear-gradient(to top, rgba(15,23,42,1) 0%, rgba(15,23,42,0.65) 45%, rgba(15,23,42,0) 100%)"
+            : 
+              "linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%)",
+        }}
+      />
     </section>
   );
 };

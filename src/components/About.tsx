@@ -94,7 +94,7 @@ const AboutSection = () => {
           className="about-glow"
           style={{
             left: "-20rem",
-            top: "-15rem",
+            top: "-5rem",
             ["--glowColor" as any]: darkMode
               ? "rgba(59,130,246,0.85)"
               : "rgba(59,130,246,0.5)",

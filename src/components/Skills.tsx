@@ -130,11 +130,11 @@ const SkillsSection: React.FC = () => {
         backgroundColor:
           activeTab === "tech"
             ? darkMode
-              ? "#2563eb"
-              : "#3b82f6"
+              ? "#FF2D55"
+              : "#FF2D55"
             : darkMode
-            ? "#7c3aed"
-            : "#8b5cf6",
+            ? "#FF2D55"
+            : "#FF2D55",
         duration: 0.4,
         ease: "power2.out",
       });
@@ -279,7 +279,7 @@ const SkillsSection: React.FC = () => {
         <span
           className="about-glow"
           style={{
-            left: "-12rem",
+            left: "-20rem",
             top: "-5rem",
             ["--glowColor" as any]: darkMode
               ? "rgba(255,45,85,0.9)"
