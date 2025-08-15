@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
+import bladeIcon from '../assets/blade.png';
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -45,10 +46,10 @@ const SkillsSection: React.FC = () => {
       color: "#06B6D4",
     },
     {
-      name: "JavaScript",
-      icon: "https://cdn.simpleicons.org/javascript/F7DF1E",
+      name: "Blade",
+      icon: bladeIcon,
       type: "tech",
-      color: "#F7DF1E",
+      color: "#FF2D20",
     },
     {
       name: "PHP",
@@ -97,6 +98,18 @@ const SkillsSection: React.FC = () => {
       icon: "https://cdn.simpleicons.org/mysql/4479A1",
       type: "tech",
       color: "#4479A1",
+    },
+    {
+      name: "phpMyAdmin",
+      icon: "https://cdn.simpleicons.org/phpmyadmin/6C78AF",
+      type: "tools",
+      color: "#6C78AF",
+    },
+    {
+      name: "Laragon",
+      icon: "https://cdn.simpleicons.org/laragon/0E83CD",
+      type: "tools",
+      color: "#0E83CD",
     },
     {
       name: "Figma",
@@ -447,7 +460,7 @@ const SkillsSection: React.FC = () => {
               darkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >
-            Tools & tech that power the products I build
+            Tools & tech that power the projects I build
           </p>
         </div>
 
@@ -514,7 +527,7 @@ const SkillsSection: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 "
         >
           <AnimatePresence mode="wait">
             {skills
