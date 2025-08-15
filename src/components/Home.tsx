@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
 import profilePhoto from "../assets/RHD.jpg";
-import cvPdf from "../assets/Rahar_3.png";
+import cvPdf from "../assets/CV Ahmad Rahardan ATS.pdf";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +16,7 @@ const HomeSection = () => {
   const handleDownload = () => {
     const link = document.createElement('a');
     link.href = cvPdf;
-    link.download = 'Rahar_3.png';
+    link.download = 'CV Ahmad Rahardan ATS.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
