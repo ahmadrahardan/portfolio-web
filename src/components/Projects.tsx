@@ -86,7 +86,7 @@ const ProjectsSection: React.FC = () => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // entrance anim (run on mount & when theme changes)
+  // entrance anim
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
@@ -95,11 +95,6 @@ const ProjectsSection: React.FC = () => {
         { y: 16, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
       );
-      // gsap.fromTo(
-      //   ".project-card",
-      //   { y: 18, opacity: 0 },
-      //   { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.04, delay: 0.05 }
-      // );
     }, sectionRef);
     return () => ctx.revert();
   }, [darkMode]);
@@ -125,29 +120,13 @@ const ProjectsSection: React.FC = () => {
     };
   }, [projects.length]);
 
-  // autoplay
-  // useEffect(() => {
-  //   const AUTOPLAY_MS = 3500;
-  //   const id = setInterval(() => {
-  //     if (!pausedRef.current) setActive((i) => (i + 1) % projects.length);
-  //   }, AUTOPLAY_MS);
-  //   const onVisibility = () => {
-  //     pausedRef.current = document.hidden || pausedRef.current;
-  //   };
-  //   document.addEventListener("visibilitychange", onVisibility);
-  //   return () => {
-  //     clearInterval(id);
-  //     document.removeEventListener("visibilitychange", onVisibility);
-  //   };
-  // }, [projects.length]);
-
   const pause = () => (pausedRef.current = true);
   const resume = () => (pausedRef.current = false);
 
-  // geometry / coverflow spacing (responsive)
-  const CARD_W = isMobile ? 360 : 720;
+  // ====== COVERFLOW GEOMETRY ======
+  const CARD_W = isMobile ? 330 : 720;
   const stepX = useMemo(
-    () => CARD_W * (isMobile ? 0.5 : 0.52),
+    () => CARD_W * (isMobile ? 0.56 : 0.52),
     [CARD_W, isMobile]
   );
   const maxVisible = isMobile ? 2 : 3;
@@ -156,9 +135,9 @@ const ProjectsSection: React.FC = () => {
     const off = idx - active;
     const abs = Math.abs(off);
     const tx = off * stepX;
-    const ty = abs * (isMobile ? 3 : 6);
-    const rotY = -(off * (isMobile ? 6 : 10));
-    const scale = Math.max(isMobile ? 0.78 : 0.7, 1 - abs * 0.1);
+    const ty = abs * (isMobile ? 6 : 6);
+    const rotY = isMobile ? 0 : -(off * 10); // flat di mobile
+    const scale = Math.max(isMobile ? 0.9 : 0.7, 1 - abs * 0.1);
     const opacity = abs > maxVisible ? 0 : 1 - abs * 0.08;
     const z = 100 - abs;
     return {
@@ -169,23 +148,9 @@ const ProjectsSection: React.FC = () => {
     };
   };
 
-  const dragX = useRef<number | null>(null);
-  const onPointerDown = (e: React.PointerEvent) => {
-    dragX.current = e.clientX;
-    pause();
-  };
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (dragX.current == null) return;
-    const dx = e.clientX - dragX.current;
-    if (dx < -60) setActive((i) => (i + 1) % projects.length);
-    if (dx > 60) setActive((i) => (i - 1 + projects.length) % projects.length);
-    dragX.current = null;
-    resume();
-  };
-
-  const themeGlow = darkMode
-    ? "from-[#FF2D55] via-[#ff7ab7] to-[#2563eb]"
-    : "from-[#d97706] via-[#dc2626] to-[#a21caf]";
+  // ====== RESPONSIVE HELPERS ======
+  const cardAspectClass = isMobile ? "h-[480px] flex flex-col" : "aspect-video"; // portrait split on mobile
+  const stageHeightClass = isMobile ? "h-[660px]" : "h-[560px]";
 
   return (
     <section
@@ -211,7 +176,6 @@ const ProjectsSection: React.FC = () => {
     }
   `}</style>
 
-        {/* top-left */}
         <span
           className="about-glow"
           style={{
@@ -222,29 +186,6 @@ const ProjectsSection: React.FC = () => {
               : "rgba(59,130,246,0.5)",
           }}
         />
-        {/* top-right */}
-        {/* <span
-          className="about-glow"
-          style={{
-            right: "-10rem",
-            top: "-20rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(168,85,247,0.8)"
-              : "rgba(168,85,247,0.55)",
-          }}
-        /> */}
-        {/* bottom-left */}
-        {/* <span
-          className="about-glow"
-          style={{
-            left: "-14rem",
-            bottom: "-18rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(59,130,246,0.85)"
-              : "rgba(59,130,246,0.5)",
-          }}
-        /> */}
-        {/* bottom-right */}
         <span
           className="about-glow"
           style={{
@@ -256,7 +197,6 @@ const ProjectsSection: React.FC = () => {
           }}
         />
       </div>
-      {/* ======= /CORNER GLOWS ======= */}
 
       <div className="container mx-auto px-5 md:px-10 max-w-screen-xl">
         {/* Head */}
@@ -267,15 +207,8 @@ const ProjectsSection: React.FC = () => {
             } mb-4`}
           >
             <span className="relative inline-block">
-              My{" "}
-              <span className={darkMode ? "text-[#FF2D55]" : "text-[#FF2D55]"}>
-                Project
-              </span>
-              <span
-                className={`absolute -bottom-1 z-[-1] left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${
-                  darkMode ? "via-red-400" : "via-red-400"
-                } to-transparent mt-2`}
-              />
+              My <span className="text-[#FF2D55]">Project</span>
+              <span className="absolute -bottom-1 z-[-1] left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" />
             </span>
           </h2>
           <p
@@ -290,10 +223,10 @@ const ProjectsSection: React.FC = () => {
         {/* STAGE */}
         <div
           ref={stageRef}
-          className="relative h-[360px] sm:h-[420px] md:h-[560px] overflow-hidden select-none"
+          className={`relative ${stageHeightClass} sm:h-[420px] md:h-[560px] overflow-hidden select-none`}
           style={{ perspective: "1400px" }}
-          onPointerDown={onPointerDown}
-          onPointerUp={onPointerUp}
+          onPointerDown={() => pause()}
+          onPointerUp={() => resume()}
           onMouseEnter={pause}
           onMouseLeave={resume}
         >
@@ -371,107 +304,171 @@ const ProjectsSection: React.FC = () => {
               return (
                 <motion.div
                   key={p.id}
-                  className="project-card absolute max-w-[94vw] w-[86vw] sm:w-[560px] md:w-[720px] aspect-video origin-center will-change-transform"
+                  className={`project-card absolute max-w-[94vw] w-[65vw] sm:w-[560px] md:w-[720px] ${cardAspectClass} origin-center will-change-transform`}
                   initial={false}
                   animate={styleFor(i) as any}
                   transition={{ type: "spring", stiffness: 80, damping: 18 }}
                   onClick={() => setActive(i)}
                 >
-                  {/* OUTER GLOW only active (lebih kecil di mobile) */}
-                  {isCenter && (
-                    <div
-                      className={`pointer-events-none absolute -inset-1 sm:-inset-1 md:-inset-2
-                                  rounded-[16px] sm:rounded-[18px] md:rounded-[20px]
-                                  blur-[10px] sm:blur-[14px] md:blur-[18px]
-                                  opacity-40 sm:opacity-45 md:opacity-50 z-0 bg-gradient-to-r ${themeGlow}`}
-                    />
-                  )}
-
                   <div
-                    className={`relative z-10 w-full h-full rounded-2xl overflow-hidden border
-    ${darkMode ? "bg-[#111827] border-white/10" : "bg-white border-gray-200"}
-    ${isCenter ? "shadow-2xl" : "shadow-lg"}`}
+                    className={`relative z-10 w-full h-full rounded-2xl overflow-hidden border ${
+                      darkMode
+                        ? "bg-[#111827] border-white/10"
+                        : "bg-white border-gray-200"
+                    } ${isCenter ? "shadow-2xl" : "shadow-lg"}`}
                   >
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    <div
-                      className="absolute inset-0"
-                      style={{ boxShadow: `inset 0 0 120px rgba(0,0,0,.35)` }}
-                    />
+                    {/* ====== MOBILE: SPLIT ====== */}
+                    {isMobile ? (
+                      <div className="flex flex-col h-full">
+                        {/* image */}
+                        <div className="h-[40%] w-full overflow-hidden">
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
 
-                    {/* Role & Technologies di pojok kiri atas */}
-                    <div className="absolute top-0 left-0 p-5 sm:p-6 md:p-8 flex flex-col gap-2 z-20">
-                      <span
-                        className="px-3 py-1 w-max rounded-full text-xs text-white shadow"
-                        style={{ backgroundColor: p.color }}
-                      >
-                        {p.role}
-                      </span>
-                      
-                    </div>
+                        {/* text */}
+                        <div className="h-[60%] w-full p-4 flex flex-col gap-6">
+                          <div className="flex items-center justify-between">
+                            <span
+                              className="px-3 py-1 rounded-full text-[11px] text-white shadow"
+                              style={{ backgroundColor: p.color }}
+                            >
+                              {p.role}
+                            </span>
+                            {/* tech chips (scrollable jika banyak) */}
+                            <div className="flex gap-2 overflow-x-auto no-scrollbar">
+                              {p.technologies.map((t, idx) => (
+                                <span
+                                  key={idx}
+                                  className="bg-gray-100 dark:bg-white/15 text-gray-700 dark:text-white/90 px-2 py-1 rounded-full text-[11px] shrink-0"
+                                >
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
 
-                    <div className="absolute top-0 right-0 p-5 sm:p-6 md:p-8 flex flex-col gap-2 z-20">
-                      <div className="flex flex-wrap gap-2">
-                        {p.technologies.map((t, idx) => (
+                          <div>
+                            <h3
+                              className={`${
+                                darkMode ? "text-white" : "text-gray-900"
+                              } text-3xl font-bold`}
+                            >
+                              {p.title}
+                            </h3>
+                            <p
+                              className={`py-2 ${
+                                darkMode ? "text-gray-300" : "text-gray-600"
+                              } text-sm line-clamp-5`}
+                            >
+                              {p.description}
+                            </p>
+                          </div>
+
+                          <div className="mt-auto flex gap-3">
+                            {p.githubLink && (
+                              <a
+                                href={p.githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-3 py-2 rounded-md text-sm font-medium"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                View Code
+                              </a>
+                            )}
+                            {p.demoLink && (
+                              <a
+                                href={p.demoLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-3 py-2 rounded-md text-sm font-medium text-white"
+                                style={{ backgroundColor: p.color }}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Live Demo
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* ====== DESKTOP: OVERLAY ====== */
+                      <>
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            boxShadow: `inset 0 0 120px rgba(0,0,0,.35)`,
+                          }}
+                        />
+
+                        {/* Role & Tech */}
+                        <div className="absolute top-0 left-0 p-6 flex flex-col gap-2 z-20">
                           <span
-                            key={idx}
-                            className="bg-white/35 text-white/90 px-3 py-1 rounded-full text-xs backdrop-blur"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Title & Description tetap di bawah */}
-                    <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 md:p-8 flex flex-col justify-end max-w-[90%] sm:max-w-[90%]">
-                      <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold">
-                        {p.title}
-                      </h3>
-                      <p className="text-white/85 text-sm md:text-base line-clamp-3">
-                        {p.description}
-                      </p>
-                      <div className="mt-2 flex gap-3">
-                        {p.githubLink && (
-                          <a
-                            href={p.githubLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium backdrop-blur"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            View Code
-                          </a>
-                        )}
-                        {p.demoLink && (
-                          <a
-                            href={p.demoLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-white px-4 py-2 rounded-md text-sm font-medium"
+                            className="px-3 py-1 w-max rounded-full text-xs text-white shadow"
                             style={{ backgroundColor: p.color }}
-                            onClick={(e) => e.stopPropagation()}
                           >
-                            Live Demo
-                          </a>
-                        )}
-                      </div>
-                    </div>
+                            {p.role}
+                          </span>
+                        </div>
+                        <div className="absolute top-0 right-0 p-6 flex flex-col gap-2 z-20">
+                          <div className="flex flex-wrap gap-2">
+                            {p.technologies.map((t, idx) => (
+                              <span
+                                key={idx}
+                                className="bg-white/35 text-white/90 px-3 py-1 rounded-full text-xs backdrop-blur"
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
 
-                    {/* Inner glow */}
-                    {isCenter && (
-                      <div
-                        className="pointer-events-none absolute inset-0 rounded-2xl"
-                        style={{
-                          boxShadow: `0 0 ${isMobile ? 60 : 90}px ${
-                            p.color
-                          }33 inset`,
-                        }}
-                      />
+                        {/* Title, Desc, Buttons */}
+                        <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col justify-end max-w-[90%] z-20">
+                          <h3 className="text-white text-2xl md:text-3xl font-bold">
+                            {p.title}
+                          </h3>
+                          <p className="text-white/85 text-sm md:text-base line-clamp-3">
+                            {p.description}
+                          </p>
+
+                          <div className="mt-3 flex gap-3">
+                            {p.githubLink && (
+                              <a
+                                href={p.githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium backdrop-blur"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                View Code
+                              </a>
+                            )}
+                            {p.demoLink && (
+                              <a
+                                href={p.demoLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-white px-4 py-2 rounded-md text-sm font-medium"
+                                style={{ backgroundColor: p.color }}
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                Live Demo
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </>
                     )}
                   </div>
                 </motion.div>
