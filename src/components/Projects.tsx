@@ -366,16 +366,7 @@ const LightProjectCard = memo<CardProps>(
                   >
                     {p.role}
                   </span>
-                  <div className="flex gap-2 overflow-x-auto no-scrollbar">
-                    {p.technologies.map((t, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-gray-100 dark:bg-white/15 text-gray-700 dark:text-white/90 px-2 py-1 rounded-full text-[11px] shrink-0"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                  
                 </div>
 
                 <div className="flex-1 flex flex-col justify-center">
@@ -395,30 +386,42 @@ const LightProjectCard = memo<CardProps>(
                   </p>
                 </div>
 
-                <div className="mt-1 flex gap-3">
-                  {p.githubLink && (
-                    <a
-                      href={p.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-3 py-2 rounded-md text-sm font-medium"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View Code
-                    </a>
-                  )}
-                  {p.demoLink && (
-                    <a
-                      href={p.demoLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-md text-sm font-medium text-white"
-                      style={{ backgroundColor: p.color }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Live Demo
-                    </a>
-                  )}
+                <div className="mt-1 flex flex-col gap-3">
+                  <div className="flex gap-2 overflow-x-auto no-scrollbar">
+                    {p.technologies.map((t, idx) => (
+                      <span
+                        key={idx}
+                        className="bg-gray-100 dark:bg-white/15 text-gray-700 dark:text-white/90 px-2 py-1 rounded-full text-[11px] shrink-0"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div>
+                    {p.githubLink && (
+                      <a
+                        href={p.githubLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-3 py-2 rounded-md  text-sm font-medium"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View Code
+                      </a>
+                    )}
+                    {p.demoLink && (
+                      <a
+                        href={p.demoLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-2 rounded-md text-sm font-medium text-white"
+                        style={{ backgroundColor: p.color }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Live Demo
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -470,7 +473,7 @@ const LightProjectCard = memo<CardProps>(
                       href={p.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium"
+                      className="bg-[#FF2D55]  hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium"
                       onClick={(e) => e.stopPropagation()}
                     >
                       View Code
