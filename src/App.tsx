@@ -3,7 +3,7 @@ import Home from "./components/Home";
 import Skills from "./components/Skills";
 import About from "./components/About";
 import Projects from './components/Projects';
-// import Certificates from './components/Certificates';
+import Certificates from './components/Certificates';
 import Footer from "./components/Footer";
 import { ThemeProvider } from "./context/ThemeContext";
 
@@ -17,7 +17,7 @@ export default function App() {
           <About />
           <Skills />
           <Projects />
-          {/* <Certificates /> */}
+          <Certificates />
         </main>
         <Footer />
       </div>

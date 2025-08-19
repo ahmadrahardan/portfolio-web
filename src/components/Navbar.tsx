@@ -7,7 +7,7 @@ const NAV_ITEMS = [
   { id: "aboutme", label: "About" },
   { id: "skills", label: "Skills" },
   { id: "projects", label: "Projects" },
-  // { id: "certificates", label: "Certificates" },
+  { id: "certificates", label: "Certificates" },
 ];
 
 const NAVBAR_HEIGHT = 72;
@@ -84,8 +84,6 @@ const Navbar: React.FC = () => {
 
   const toggleMenu = () => setIsOpen((s) => !s);
 
-  // Scroll tanpa offset: semua section (termasuk About) mentok ke atas,
-  // navbar fixed mengambang di atasnya.
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     link: string
