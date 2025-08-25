@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 import bladeIcon from "../assets/blade.png";

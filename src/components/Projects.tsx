@@ -1,18 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom"; 
 
 import Simbako from "../assets/Simbako.webp";
 import Sepadu from "../assets/Sepadu.webp";
 import ITC from "../assets/ITC.webp";
 import Portfolio from "../assets/Portfolio.webp";
+import HeyBrew from "../assets/HeyBrew.webp";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 type Project = {
   id: number;
+  slug: string;               
   title: string;
   description: string;
   image: string;
@@ -25,10 +28,12 @@ type Project = {
 
 const ProjectsSection: React.FC = () => {
   const { darkMode } = useTheme();
+  const navigate = useNavigate();               
 
   const projects: Project[] = [
     {
       id: 1,
+      slug: "simbako",                          
       title: "Simbako",
       description:
         "Simbako is a training and education submission system for the tobacco industry in Jember, designed to facilitate training applications and enhance industry knowledge.",
@@ -40,6 +45,7 @@ const ProjectsSection: React.FC = () => {
     },
     {
       id: 2,
+      slug: "sepadu",
       title: "Sepadu",
       description:
         "Sepadu is an integrated training system for industries in Jember Regency, designed to help business owners submit training requests to the Department of Trade and Industry.",
@@ -51,6 +57,7 @@ const ProjectsSection: React.FC = () => {
     },
     {
       id: 3,
+      slug: "it-convert",
       title: "IT Convert",
       description:
         "IT Convert is a website by the Information Systems Student Association for participating in and submitting competition proposals in the field of Information and Communication Technology.",
@@ -62,6 +69,7 @@ const ProjectsSection: React.FC = () => {
     },
     {
       id: 4,
+      slug: "profile-website",
       title: "Profile Website",
       description:
         "A personal portfolio website designed to showcase personal profile, completed projects, technical skills, and organizational experience.",
@@ -70,6 +78,17 @@ const ProjectsSection: React.FC = () => {
       technologies: ["React", "Tailwind"],
       color: "#FF2D55",
       githubLink: "https://github.com/ahmadrahardan/portfolio-web",
+    },
+    {
+      id: 5,
+      slug: "hey-brew",
+      title: "Hey Brew",
+      description:
+        "A Web-Based Coffee Bean Management and Recommendation System for Dopy Coffee",
+      image: HeyBrew,
+      role: "System Analyst",
+      technologies: ["Enterprise Architect"],
+      color: "#FF2D55",
     },
   ];
 
@@ -103,6 +122,9 @@ const ProjectsSection: React.FC = () => {
     if (currentIndex > 0) setCurrentIndex((p) => p - 1);
   };
 
+  // Navigasi ke detail
+  const openDetail = (slug: string) => navigate(`/projects/${slug}`);
+
   // Variants desktop (asli)
   const cardVariantsDesktop: Record<PosKey, any> = {
     center: { x: 0, scale: 1, zIndex: 5, opacity: 1 },
@@ -112,7 +134,7 @@ const ProjectsSection: React.FC = () => {
     right1: { x: 280, scale: 0.75, zIndex: 3, opacity: 0.9 },
   };
 
-  // Variants mobile: jarak X lebih kecil supaya pas di layar sempit
+  // Variants mobile
   const cardVariantsMobile: Record<PosKey, any> = {
     center: { x: 0, scale: 1, zIndex: 5, opacity: 1 },
     left1: { x: -200, scale: 0.88, zIndex: 3, opacity: 0.95 },
@@ -153,7 +175,7 @@ const ProjectsSection: React.FC = () => {
           </p>
         </div>
 
-        {/* ===== MOBILE (≤ md): layout berbeda, animasi sama ===== */}
+        {/* ===== MOBILE (≤ md) ===== */}
         <div className="relative mt-10 min-h-[520px] overflow-visible md:hidden">
           <div className="absolute inset-0 flex items-center justify-center">
             {projects.map((p, index) => {
@@ -176,7 +198,11 @@ const ProjectsSection: React.FC = () => {
                   variants={cardVariantsMobile}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   style={{ position: "absolute" }}
-                  className={`rounded-2xl overflow-hidden shadow-xl border ${
+                  onClick={() => openDetail(p.slug)}                 
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && openDetail(p.slug)}
+                  className={`cursor-pointer rounded-2xl overflow-hidden shadow-xl border ${
                     darkMode ? "border-white/10" : "border-gray-200"
                   } ${
                     isCenter
@@ -184,7 +210,7 @@ const ProjectsSection: React.FC = () => {
                       : ""
                   }`}
                 >
-                  {/* Card MOBILE: gambar di atas, panel di bawah */}
+                  {/* Card MOBILE */}
                   <div className="w-[92vw] max-w-[320px] h-[500px] sm:h-[520px] flex flex-col overflow-hidden">
                     <div className="relative w-full basis-[40%] shrink-0">
                       <img
@@ -245,7 +271,7 @@ const ProjectsSection: React.FC = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => e.stopPropagation()} // tetap supaya klik tombol tidak buka detail
                             >
                               View Code
                             </a>
@@ -271,7 +297,7 @@ const ProjectsSection: React.FC = () => {
             })}
           </div>
         </div>
-        {/* Controls mobile (di luar panggung, jadi tidak menutup card) */}
+
         <div className="md:hidden mt-4 flex justify-center gap-3">
           <button
             aria-label="Previous project"
@@ -299,7 +325,6 @@ const ProjectsSection: React.FC = () => {
           </button>
         </div>
 
-        {/* ===== DESKTOP (≥ md): aslinya ===== */}
         <div className="relative -mt-2 min-h-[500px] overflow-visible hidden md:block">
           <div className="absolute inset-0 flex items-center justify-center">
             {projects.map((p, index) => {
@@ -322,7 +347,11 @@ const ProjectsSection: React.FC = () => {
                   variants={cardVariantsDesktop}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   style={{ position: "absolute" }}
-                  className={`rounded-2xl overflow-hidden ${
+                  onClick={() => openDetail(p.slug)}                 
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === "Enter" && openDetail(p.slug)}
+                  className={`cursor-pointer rounded-2xl overflow-hidden ${
                     darkMode ? "bg-[#111827]" : "bg-white"
                   } shadow-xl border ${
                     darkMode ? "border-white/10" : "border-gray-200"

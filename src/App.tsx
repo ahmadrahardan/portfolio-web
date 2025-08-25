@@ -1,26 +1,35 @@
+// App.tsx
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import Skills from "./components/Skills";
-import About from "./components/About";
-import Projects from './components/Projects';
-import Certificates from './components/Certificates';
 import Footer from "./components/Footer";
 import { ThemeProvider } from "./context/ThemeContext";
+import Landing from "./pages/Landing";
+import ProjectDetail from "./pages/ProjectDetail";
+
+function Layout() {
+  const location = useLocation();
+
+  // halaman detail project: /projects/:slug
+  const hideNavbar = location.pathname.startsWith("/projects/");
+
+  return (
+    <div className="min-h-screen">
+      {!hideNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/projects/:slug" element={<ProjectDetail />} />
+      </Routes>
+      {!hideNavbar && <Footer />}
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <ThemeProvider>
-      <div className="min-h-screen">
-        <Navbar />
-        <main>
-          <Home />
-          <About />
-          <Skills />
-          <Projects />
-          <Certificates />
-        </main>
-        <Footer />
-      </div>
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
