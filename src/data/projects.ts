@@ -4,6 +4,7 @@ import Sepadu from "../assets/Sepadu.webp";
 import ITC from "../assets/ITC.webp";
 import Portfolio from "../assets/Portfolio.webp";
 import HeyBrew from "../assets/HeyBrew.webp";
+import Simba from "../assets/Simba.webp";
 
 export type Project = {
   id: number;
@@ -27,6 +28,29 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: 1,
+    slug: "simba",
+    title: "SIMBA",
+    description:
+      "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
+    image: Simba,
+    role: "Backend Developer",
+    technologies: ["Laravel", "PHP"],
+    color: "#FF2D55",
+    githubLink: "https://github.com/fauzul91/inventory-rsud",
+    year: 2026,
+    duration: "4 months",
+    status: "Completed",
+    overview:
+      "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
+    highlights: [
+      "Role-based access (admin, verifikator, pemohon)",
+      "Form pengajuan dinamis + upload lampiran",
+      "Dashboard KPI & grafik aktivitas",
+      "Ekspor laporan (PDF/Excel)",
+    ],
+  },
+  {
+    id: 2,
     slug: "simbako",
     title: "Simbako",
     description:
@@ -49,7 +73,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     slug: "sepadu",
     title: "Sepadu",
     description:
@@ -71,7 +95,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     slug: "it-convert",
     title: "IT Convert",
     description:
@@ -94,7 +118,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     slug: "profile-website",
     title: "Profile Website",
     description:
@@ -116,7 +140,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     slug: "hey-brew",
     title: "Hey Brew",
     description:

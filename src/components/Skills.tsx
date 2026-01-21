@@ -1,7 +1,8 @@
 import { useState, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
-import bladeIcon from "../assets/blade.png";
+import bladeIcon from "../assets/blade.webp";
+import canvaIcon from "../assets/canva.webp";
 
 type Skill = {
   name: string;
@@ -36,7 +37,10 @@ const SkillsSection: React.FC = () => {
         type: "tech",
         color: "#06B6D4",
       },
-      { name: "Blade", icon: bladeIcon, type: "tech", color: "#FF2D20" },
+      { name: "Blade", 
+        icon: bladeIcon, 
+        type: "tech", 
+        color: "#FF2D20" },
       {
         name: "PHP",
         icon: "https://cdn.simpleicons.org/php/777BB4",
@@ -105,7 +109,7 @@ const SkillsSection: React.FC = () => {
       },
       {
         name: "Canva",
-        icon: "https://cdn.simpleicons.org/canva/00C4CC",
+        icon: canvaIcon,
         type: "tools",
         color: "#00C4CC",
       },

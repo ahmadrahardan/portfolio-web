@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
 import profilePhoto from "../assets/RHD.jpg";
-import cvPdf from "../assets/CV Ahmad Rahardan.pdf";
+import cvPdf from "../assets/CV Ahmad Rahardan ATS.pdf";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 

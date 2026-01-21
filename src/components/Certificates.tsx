@@ -6,6 +6,9 @@ import sepadu from "../assets/certificates/Sertifikat HKI Sepadu.webp";
 import uxLaos from "../assets/certificates/Sertifikat UIUX.webp";
 import gitLaos from "../assets/certificates/Sertifikat Pelatihan GIT.webp";
 import hkiPdf from "../assets/certificates/Sertifikat_SISTEM PELATIHAN TERPADU UNTUK SELURUH INDUSTRI DI KABUPATEN JEMBER.pdf";
+import simba from "../assets/certificates/Sertifikat HKI SIMBA.webp";
+import hkiSIMBA from "../assets/certificates/Sertifikat_SIMBA.pdf";
+import expo from "../assets/certificates/Sertifikat Expo Capstone.webp";
 // import fest from "../assets/certificates/Sertifikat Entrepreneurship.webp";
 
 interface Certificate {
@@ -29,12 +32,24 @@ const CertificateSection = () => {
     },
     {
       id: "2",
+      title: "Sertifikat HKI SIMBA (Sistem Informasi Manajemen Barang dan Aset)",
+      link: hkiSIMBA,
+      image: simba,
+    },
+    {
+      id: "3",
+      title: "Sertifikat Expo Capstone Project",
+      link: expo,
+      image: expo,
+    },
+    {
+      id: "4",
       title: "Pelatihan Dasar UI/UX",
       link: uxLaos,
       image: uxLaos,
     },
     {
-      id: "3",
+      id: "5",
       title: "Pelatihan GIT",
       link: gitLaos,
       image: gitLaos,

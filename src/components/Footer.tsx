@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
           {[
             {
               name: "LinkedIn",
-              href: "www.linkedin.com/in/ahmad-rahardan",
+              href: "https://www.linkedin.com/in/ahmad-rahardan/",
               icon: (
                 <svg
                   width="24"

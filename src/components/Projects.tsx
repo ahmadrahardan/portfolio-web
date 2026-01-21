@@ -10,6 +10,7 @@ import Sepadu from "../assets/Sepadu.webp";
 import ITC from "../assets/ITC.webp";
 import Portfolio from "../assets/Portfolio.webp";
 import HeyBrew from "../assets/HeyBrew.webp";
+import Simba from "../assets/Simba.webp";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,18 @@ const ProjectsSection: React.FC = () => {
   const projects: Project[] = [
     {
       id: 1,
+      slug: "simba",                          
+      title: "SIMBA",
+      description:
+        "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
+      image: Simba,
+      role: "Backend Developer",
+      technologies: ["Laravel", "PHP"],
+      color: "#FF2D55",
+      githubLink: "https://github.com/fauzul91/inventory-rsud",
+    },
+    {
+      id: 2,
       slug: "simbako",                          
       title: "Simbako",
       description:
@@ -44,7 +57,7 @@ const ProjectsSection: React.FC = () => {
       githubLink: "https://github.com/ahmadrahardan/simbako",
     },
     {
-      id: 2,
+      id: 3,
       slug: "sepadu",
       title: "Sepadu",
       description:
@@ -56,7 +69,7 @@ const ProjectsSection: React.FC = () => {
       githubLink: "https://github.com/ahmadrahardan/sepadu",
     },
     {
-      id: 3,
+      id: 4,
       slug: "it-convert",
       title: "IT Convert",
       description:
@@ -68,7 +81,7 @@ const ProjectsSection: React.FC = () => {
       githubLink: "https://itconvert.himasif.id/",
     },
     {
-      id: 4,
+      id: 5,
       slug: "profile-website",
       title: "Profile Website",
       description:
@@ -80,7 +93,7 @@ const ProjectsSection: React.FC = () => {
       githubLink: "https://github.com/ahmadrahardan/portfolio-web",
     },
     {
-      id: 5,
+      id: 6,
       slug: "hey-brew",
       title: "Hey Brew",
       description:

@@ -215,7 +215,7 @@ const AboutSection = () => {
                 darkMode ? "text-slate-300" : "text-slate-600"
               } leading-8 max-w-4xl text-md sm:text-xl`}
             >
-              An Information Systems student (GPA 3.95) with a strong focus on
+              An Information Systems student (GPA 3.96) with a strong focus on
               web development, I am passionate about creating digital products
               that blend usability and aesthetics. I bring designs to life with
               Laravel, Blade, and Tailwind, and structure data and queries
