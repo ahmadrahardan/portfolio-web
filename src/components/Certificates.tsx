@@ -205,7 +205,7 @@ const CertificateSection = () => {
                   className={`text-lg font-semibold ${
                     darkMode
                       ? "text-white group-hover:text-white"
-                      : "text-gray-900 group-hover:text-white"
+                      : "text-gray-900 group-hover:text-gray-900"
                   } mb-2 line-clamp-4`}
                 >
                   {cert.title}
