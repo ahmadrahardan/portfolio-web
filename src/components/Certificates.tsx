@@ -74,6 +74,70 @@ const CertificateSection = () => {
       id="certificates"
       className={`py-20 min-h-screen ${darkMode ? "bg-gray-900" : "bg-white"} relative overflow-hidden`}
     >
+
+    {/* ======= CORNER GLOWS ======= */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <style>{`
+    .about-glow{
+      position:absolute;
+      width:28rem;height:28rem;
+      filter:blur(40px);
+      opacity:.30;
+      will-change:transform,opacity;
+      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
+    }
+    @media (min-width:768px){
+      .about-glow{width:44rem;height:44rem}
+    }
+  `}</style>
+
+        {/* top-left */}
+        {/* <span
+          className="about-glow"
+          style={{
+            left: "-20rem",
+            top: "1rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
+          }}
+        /> */}
+        {/* top-right */}
+        {/* <span
+          className="about-glow"
+          style={{
+            right: "-10rem",
+            top: "-20rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(168,85,247,0.8)"
+              : "rgba(168,85,247,0.55)",
+          }}
+        /> */}
+        {/* bottom-left */}
+        {/* <span
+          className="about-glow"
+          style={{
+            left: "-14rem",
+            bottom: "-18rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(59,130,246,0.85)"
+              : "rgba(59,130,246,0.5)",
+          }}
+        /> */}
+        {/* bottom-right */}
+        <span
+          className="about-glow"
+          style={{
+            right: "-20rem",
+            bottom: "3rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
+          }}
+        />
+      </div>
+      {/* ======= /CORNER GLOWS ======= */}
+
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-emerald-500/10"></div>
       </div>
@@ -109,7 +173,7 @@ const CertificateSection = () => {
               onClick={() => handleCertificateClick(cert)}
               className={`certificate-card group relative cursor-pointer rounded-xl overflow-hidden shadow-lg border-2 ${
                 darkMode ? "border-white/10 bg-gray-900" : "border-gray-200 bg-white"
-              } hover:border-blue-400 transition`}
+              } hover:border-[#FF2D55] transition`}
             >
               <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent z-10"></div>
@@ -140,15 +204,15 @@ const CertificateSection = () => {
                 <h3
                   className={`text-lg font-semibold ${
                     darkMode
-                      ? "text-white group-hover:text-blue-300"
-                      : "text-gray-900 group-hover:text-blue-600"
+                      ? "text-white group-hover:text-white"
+                      : "text-gray-900 group-hover:text-white"
                   } mb-2 line-clamp-4`}
                 >
                   {cert.title}
                 </h3>
               </div>
 
-              <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-blue-500/50" />
+              <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-[#FF2D55]/50" />
             </div>
           ))}
         </div>

@@ -28,7 +28,7 @@ const AboutSection = () => {
       tl.fromTo(
         photoRef.current,
         { x: -40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.0 }
+        { x: 0, opacity: 1, duration: 1.0 },
       );
 
       // Konten teks stagger
@@ -36,7 +36,7 @@ const AboutSection = () => {
         tl.from(
           Array.from(contentRef.current.children),
           { y: 24, opacity: 0, duration: 0.9, stagger: 0.12 },
-          "-=0.8"
+          "-=0.8",
         );
       }
 
@@ -69,10 +69,9 @@ const AboutSection = () => {
       ref={sectionRef}
       id="aboutme"
       className={`${
-        darkMode ? "bg-slate-900" : "bg-white"
-      } relative overflow-hidden py-16 sm:py-20 md:py-28 lg:py-40 min-h-screen flex items-center justify-center transition-colors duration-500`}
+        darkMode ? "bg-gray-900" : "bg-white"
+      } relative overflow-hidden pb-20 pt-20 min-h-screen flex items-center justify-center transition-colors duration-500`}
     >
-
       {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
         <style>{`
@@ -96,27 +95,27 @@ const AboutSection = () => {
             left: "-20rem",
             top: "-5rem",
             ["--glowColor" as any]: darkMode
-              ? "rgba(59,130,246,0.85)"
-              : "rgba(59,130,246,0.5)",
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
           }}
         />
         {/* top-right */}
         {/* <span
           className="about-glow"
           style={{
-            right: "-10rem",
-            top: "-20rem",
+            right: "-20rem",
+            top: "-7rem",
             ["--glowColor" as any]: darkMode
-              ? "rgba(168,85,247,0.8)"
-              : "rgba(168,85,247,0.55)",
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
           }}
         /> */}
         {/* bottom-left */}
         {/* <span
           className="about-glow"
           style={{
-            left: "-14rem",
-            bottom: "-18rem",
+            left: "-20rem",
+            bottom: "-5rem",
             ["--glowColor" as any]: darkMode
               ? "rgba(59,130,246,0.85)"
               : "rgba(59,130,246,0.5)",
@@ -188,18 +187,9 @@ const AboutSection = () => {
               }`}
             >
               <span className="relative inline-block">
-                About{" "}
-                <span
-                  className={darkMode ? "text-[#FF2D55]" : "text-[#FF2D55]"}
-                >
-                  Me
-                </span>
-                <span
-                  className={`absolute -bottom-1 z-[-1] left-0 w-full h-0.5 bg-gradient-to-r from-transparent ${
-                    darkMode ? "via-red-400" : "via-red-400"
-                  } to-transparent mt-2`}
-                />
-              </span>
+              About <span className="text-[#FF2D55]">Me</span>
+              <span className="absolute -bottom-1 z-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" />
+            </span>
             </h2>
 
             <h3
@@ -215,14 +205,15 @@ const AboutSection = () => {
                 darkMode ? "text-slate-300" : "text-slate-600"
               } leading-8 max-w-4xl text-md sm:text-xl`}
             >
-              An Information Systems student (GPA 3.96) with a strong focus on
-              web development, I am passionate about creating digital products
-              that blend usability and aesthetics. I bring designs to life with
-              Laravel, Blade, and Tailwind, and structure data and queries
-              efficiently using MySQL. Through competitions and team projects, I
-              have been a collaborative contributor—skilled at breaking down
-              requirements, iterating on feedback, and balancing usability with
-              clean implementation to deliver user-centered solutions.
+              A highly motivated and adaptable sixth-semester Information
+              Systems student at the Faculty of Computer Science, University of
+              Jember (GPA 3.96), with a strong passion for information
+              technology development. Skilled in teamwork, communication, and
+              problem-solving with hands-on experience in developing web
+              applications using Laravel, Blade, React, Tailwind, and managing
+              databases efficiently with MySQL. Currently deepening expertise in
+              web development to build high-performance, responsive websites
+              with intuitive user experiences.
             </p>
           </div>
         </div>

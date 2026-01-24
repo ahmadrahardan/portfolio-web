@@ -3,20 +3,21 @@ import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 import Simbako from "../assets/Simbako.webp";
 import Sepadu from "../assets/Sepadu.webp";
 import ITC from "../assets/ITC.webp";
 import Portfolio from "../assets/Portfolio.webp";
 import HeyBrew from "../assets/HeyBrew.webp";
+import SSO from "../assets/SSO.webp";
 import Simba from "../assets/Simba.webp";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 type Project = {
   id: number;
-  slug: string;               
+  slug: string;
   title: string;
   description: string;
   image: string;
@@ -29,27 +30,15 @@ type Project = {
 
 const ProjectsSection: React.FC = () => {
   const { darkMode } = useTheme();
-  const navigate = useNavigate();               
+  const navigate = useNavigate();
 
   const projects: Project[] = [
     {
       id: 1,
-      slug: "simba",                          
-      title: "SIMBA",
-      description:
-        "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
-      image: Simba,
-      role: "Backend Developer",
-      technologies: ["Laravel", "PHP"],
-      color: "#FF2D55",
-      githubLink: "https://github.com/fauzul91/inventory-rsud",
-    },
-    {
-      id: 2,
-      slug: "simbako",                          
+      slug: "simbako",
       title: "Simbako",
       description:
-        "Simbako is a training and education submission system for the tobacco industry in Jember, designed to facilitate training applications and enhance industry knowledge.",
+        "Simbako is a training system for the tobacco industry in Jember, streamlining training applications and improving industry knowledge.",
       image: Simbako,
       role: "Fullstack Developer",
       technologies: ["Laravel", "PHP", "Tailwind"],
@@ -57,11 +46,11 @@ const ProjectsSection: React.FC = () => {
       githubLink: "https://github.com/ahmadrahardan/simbako",
     },
     {
-      id: 3,
+      id: 2,
       slug: "sepadu",
       title: "Sepadu",
       description:
-        "Sepadu is an integrated training system for industries in Jember Regency, designed to help business owners submit training requests to the Department of Trade and Industry.",
+        "Sepadu is an integrated training platform for industries in Jember Regency to submit training requests.",
       image: Sepadu,
       role: "Fullstack Developer",
       technologies: ["Laravel", "PHP", "Tailwind"],
@@ -69,35 +58,59 @@ const ProjectsSection: React.FC = () => {
       githubLink: "https://github.com/ahmadrahardan/sepadu",
     },
     {
-      id: 4,
+      id: 3,
       slug: "it-convert",
       title: "IT Convert",
       description:
-        "IT Convert is a website by the Information Systems Student Association for participating in and submitting competition proposals in the field of Information and Communication Technology.",
+        "IT Convert is a website developed by the Information Systems Student Association for submitting and managing ICT competition proposals.",
       image: ITC,
-      role: "Fullstack Developer",
+      role: "Frontend Developer",
       technologies: ["Laravel", "PHP", "Tailwind"],
       color: "#FF2D55",
       githubLink: "https://itconvert.himasif.id/",
     },
     {
-      id: 5,
+      id: 4,
       slug: "profile-website",
       title: "Profile Website",
       description:
         "A personal portfolio website designed to showcase personal profile, completed projects, technical skills, and organizational experience.",
       image: Portfolio,
-      role: "Front-End Developer",
+      role: "Frontend Developer",
       technologies: ["React", "Tailwind"],
       color: "#FF2D55",
       githubLink: "https://github.com/ahmadrahardan/portfolio-web",
     },
     {
+      id: 5,
+      slug: "sso",
+      title: "Single Sign-On (SSO)",
+      description:
+        "SSO (Single Sign-On) is an authentication mechanism that allows users to access multiple applications or systems with a single login.",
+      image: SSO,
+      role: "Backend Developer",
+      technologies: ["Laravel", "PHP"],
+      color: "#FF2D55",
+      githubLink: "https://github.com/fauzul91/inventory-rsud",
+    },
+    {
       id: 6,
+      slug: "simba",
+      title: "SIMBA",
+      description:
+        "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes.",
+      image: Simba,
+      role: "Backend Developer",
+      technologies: ["Laravel", "PHP"],
+      color: "#FF2D55",
+      githubLink: "https://github.com/fauzul91/inventory-rsud",
+    },
+    {
+      id: 7,
       slug: "hey-brew",
       title: "Hey Brew",
       description:
-        "A Web-Based Coffee Bean Management and Recommendation System for Dopy Coffee",
+        "Hey Brew is a web-based coffee bean management and recommendation system for Dopy Coffee.",
       image: HeyBrew,
       role: "System Analyst",
       technologies: ["Enterprise Architect"],
@@ -113,12 +126,12 @@ const ProjectsSection: React.FC = () => {
       gsap.fromTo(
         ".section-title",
         { y: 16, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }
+        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
       );
       gsap.fromTo(
         ".section-subtitle",
         { y: 12, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", delay: 0.05 }
+        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out", delay: 0.05 },
       );
     }, sectionRef);
     return () => ctx.revert();
@@ -141,19 +154,19 @@ const ProjectsSection: React.FC = () => {
   // Variants desktop (asli)
   const cardVariantsDesktop: Record<PosKey, any> = {
     center: { x: 0, scale: 1, zIndex: 5, opacity: 1 },
-    left1: { x: -280, scale: 0.75, zIndex: 3, opacity: 0.9 },
-    left: { x: -520, scale: 0.6, zIndex: 2, opacity: 0.6 },
-    right: { x: 520, scale: 0.6, zIndex: 2, opacity: 0.6 },
-    right1: { x: 280, scale: 0.75, zIndex: 3, opacity: 0.9 },
+    left1: { x: -200, scale: 0.85, zIndex: 3, opacity: 0.9 },
+    left: { x: -320, scale: 0.75, zIndex: 2, opacity: 0.3 },
+    right1: { x: 200, scale: 0.85, zIndex: 3, opacity: 0.9 },
+    right: { x: 320, scale: 0.75, zIndex: 2, opacity: 0.3 },
   };
 
   // Variants mobile
   const cardVariantsMobile: Record<PosKey, any> = {
     center: { x: 0, scale: 1, zIndex: 5, opacity: 1 },
-    left1: { x: -200, scale: 0.88, zIndex: 3, opacity: 0.95 },
-    left: { x: -340, scale: 0.78, zIndex: 2, opacity: 0.6 },
-    right: { x: 340, scale: 0.78, zIndex: 2, opacity: 0.6 },
-    right1: { x: 200, scale: 0.88, zIndex: 3, opacity: 0.95 },
+    left1: { x: -140, scale: 0.9, zIndex: 3, opacity: 0.9 },
+    left: { x: -220, scale: 0.85, zIndex: 2, opacity: 0.3 },
+    right1: { x: 140, scale: 0.9, zIndex: 3, opacity: 0.9 },
+    right: { x: 220, scale: 0.85, zIndex: 2, opacity: 0.3 },
   };
 
   const panelBg = darkMode ? "bg-[#0B1220]" : "bg-white";
@@ -166,6 +179,69 @@ const ProjectsSection: React.FC = () => {
         darkMode ? "bg-gray-900" : "bg-white"
       } transition-colors duration-500 pt-20 relative overflow-x-hidden pb-20`}
     >
+      {/* ======= CORNER GLOWS ======= */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <style>{`
+    .about-glow{
+      position:absolute;
+      width:28rem;height:28rem;
+      filter:blur(40px);
+      opacity:.30;
+      will-change:transform,opacity;
+      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
+    }
+    @media (min-width:768px){
+      .about-glow{width:44rem;height:44rem}
+    }
+  `}</style>
+
+        {/* top-left */}
+        <span
+          className="about-glow"
+          style={{
+            left: "-20rem",
+            top: "1rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
+          }}
+        />
+        {/* top-right */}
+        {/* <span
+          className="about-glow"
+          style={{
+            right: "-10rem",
+            top: "-20rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(168,85,247,0.8)"
+              : "rgba(168,85,247,0.55)",
+          }}
+        /> */}
+        {/* bottom-left */}
+        {/* <span
+          className="about-glow"
+          style={{
+            left: "-14rem",
+            bottom: "-18rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(59,130,246,0.85)"
+              : "rgba(59,130,246,0.5)",
+          }}
+        /> */}
+        {/* bottom-right */}
+        {/* <span
+          className="about-glow"
+          style={{
+            right: "-20rem",
+            bottom: "-1rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(59,130,246,0.85)"
+              : "rgba(59,130,246,0.5)",
+          }}
+        /> */}
+      </div>
+      {/* ======= /CORNER GLOWS ======= */}
+
       <div className="container mx-auto px-5 md:px-10 max-w-screen-xl">
         {/* TITLE */}
         <div className="text-center">
@@ -211,11 +287,9 @@ const ProjectsSection: React.FC = () => {
                   variants={cardVariantsMobile}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   style={{ position: "absolute" }}
-                  onClick={() => openDetail(p.slug)}                 
-                  role="button"
                   tabIndex={0}
                   onKeyDown={(e) => e.key === "Enter" && openDetail(p.slug)}
-                  className={`cursor-pointer rounded-2xl overflow-hidden shadow-xl border ${
+                  className={`rounded-2xl overflow-hidden shadow-xl border ${
                     darkMode ? "border-white/10" : "border-gray-200"
                   } ${
                     isCenter
@@ -277,7 +351,16 @@ const ProjectsSection: React.FC = () => {
                           ))}
                         </div>
 
-                        <div className="pt-4 flex gap-3">
+                        <div
+                          className="cursor-pointer pt-4 flex gap-3"
+                          onClick={() => openDetail(p.slug)}
+                        >
+                          <div className="bg-[#FF2D55] hover:bg-white hover:text-[#FF2D55] text-white px-4 py-2 rounded-md text-sm font-medium">
+                            View Detail
+                          </div>
+                        </div>
+
+                        {/* <div className="pt-4 flex gap-3">
                           {p.githubLink && (
                             <a
                               href={p.githubLink}
@@ -301,7 +384,7 @@ const ProjectsSection: React.FC = () => {
                               Live Demo
                             </a>
                           )}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -360,11 +443,9 @@ const ProjectsSection: React.FC = () => {
                   variants={cardVariantsDesktop}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   style={{ position: "absolute" }}
-                  onClick={() => openDetail(p.slug)}                 
-                  role="button"
                   tabIndex={0}
                   onKeyDown={(e) => e.key === "Enter" && openDetail(p.slug)}
-                  className={`cursor-pointer rounded-2xl overflow-hidden ${
+                  className={`rounded-2xl overflow-hidden ${
                     darkMode ? "bg-[#111827]" : "bg-white"
                   } shadow-xl border ${
                     darkMode ? "border-white/10" : "border-gray-200"
@@ -383,7 +464,7 @@ const ProjectsSection: React.FC = () => {
                         loading="lazy"
                         decoding="async"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
                       <div className="absolute top-0 left-0 p-6 flex flex-col gap-2 z-20">
                         <span
                           className="px-3 py-1 w-max rounded-full text-xs text-white"
@@ -397,7 +478,8 @@ const ProjectsSection: React.FC = () => {
                           {p.technologies.map((t, idx) => (
                             <span
                               key={idx}
-                              className="bg-white/35 text-white/90 px-3 py-1 rounded-full text-xs"
+                              className="text-white px-3 py-1 rounded-full text-xs"
+                              style={{ backgroundColor: p.color }}
                             >
                               {t}
                             </span>
@@ -408,10 +490,37 @@ const ProjectsSection: React.FC = () => {
                         <h3 className="text-white text-2xl md:text-3xl font-bold">
                           {p.title}
                         </h3>
-                        <p className="text-white/85 text-sm md:text-base line-clamp-3">
+                        <p className="text-white/95 mt-1 text-sm md:text-base line-clamp-3">
                           {p.description}
                         </p>
-                        <div className="mt-3 flex gap-3">
+                        <div
+                          className="
+                            mt-3 inline-flex items-center gap-2
+                            text-white text-sm md:text-base font-medium
+                          "
+                        >
+                          <span
+                            className="
+                            relative cursor-pointer
+                            group
+                            transition-colors duration-300
+                            hover:text-[#FF2D55]
+                          "
+                            onClick={() => openDetail(p.slug)}
+                          >
+                            View Project Details <span>→</span>
+                            <span
+                              className="
+                              absolute left-0 -bottom-1
+                              w-0 h-[1px]
+                              bg-[#FF2D55]
+                              transition-all duration-300
+                              group-hover:w-full
+                            "
+                            />
+                          </span>
+                        </div>
+                        {/* <div className="mt-3 flex gap-3">
                           {p.githubLink && (
                             <a
                               href={p.githubLink}
@@ -435,7 +544,7 @@ const ProjectsSection: React.FC = () => {
                               Live Demo
                             </a>
                           )}
-                        </div>
+                        </div> */}
                       </div>
                     </>
                   </div>

@@ -37,10 +37,7 @@ const SkillsSection: React.FC = () => {
         type: "tech",
         color: "#06B6D4",
       },
-      { name: "Blade", 
-        icon: bladeIcon, 
-        type: "tech", 
-        color: "#FF2D20" },
+      { name: "Blade", icon: bladeIcon, type: "tech", color: "#FF2D20" },
       {
         name: "PHP",
         icon: "https://cdn.simpleicons.org/php/777BB4",
@@ -126,7 +123,7 @@ const SkillsSection: React.FC = () => {
         color: "#1E88E5",
       },
     ],
-    []
+    [],
   );
 
   const themeBorderStops = darkMode
@@ -140,6 +137,69 @@ const SkillsSection: React.FC = () => {
         darkMode ? "bg-gray-900" : "bg-white"
       } transition-colors duration-500`}
     >
+      {/* ======= CORNER GLOWS ======= */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <style>{`
+    .about-glow{
+      position:absolute;
+      width:28rem;height:28rem;
+      filter:blur(40px);
+      opacity:.30;
+      will-change:transform,opacity;
+      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
+    }
+    @media (min-width:768px){
+      .about-glow{width:44rem;height:44rem}
+    }
+  `}</style>
+
+        {/* top-left */}
+        {/* <span
+          className="about-glow"
+          style={{
+            left: "-20rem",
+            top: "1rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
+          }}
+        /> */}
+        {/* top-right */}
+        {/* <span
+          className="about-glow"
+          style={{
+            right: "-10rem",
+            top: "-20rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(168,85,247,0.8)"
+              : "rgba(168,85,247,0.55)",
+          }}
+        /> */}
+        {/* bottom-left */}
+        {/* <span
+          className="about-glow"
+          style={{
+            left: "-14rem",
+            bottom: "-18rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(59,130,246,0.85)"
+              : "rgba(59,130,246,0.5)",
+          }}
+        /> */}
+        {/* bottom-right */}
+        <span
+          className="about-glow"
+          style={{
+            right: "-20rem",
+            bottom: "-1rem",
+            ["--glowColor" as any]: darkMode
+              ? "rgba(255,45,85,0.9)"
+              : "rgba(255,45,85,0.6)",
+          }}
+        />
+      </div>
+      {/* ======= /CORNER GLOWS ======= */}
+
       <style>{`
         .border-ring {
           --thickness: 2px;
@@ -198,8 +258,8 @@ const SkillsSection: React.FC = () => {
                 activeTab === "tech"
                   ? "text-white bg-[#FF2D55]"
                   : darkMode
-                  ? "text-gray-300 hover:text-white"
-                  : "text-gray-900"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-900"
               }`}
               onClick={() => setActiveTab("tech")}
             >
@@ -212,8 +272,8 @@ const SkillsSection: React.FC = () => {
                 activeTab === "tools"
                   ? "text-white bg-[#FF2D55]"
                   : darkMode
-                  ? "text-gray-300 hover:text-white"
-                  : "text-gray-900"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-900"
               }`}
               onClick={() => setActiveTab("tools")}
             >
