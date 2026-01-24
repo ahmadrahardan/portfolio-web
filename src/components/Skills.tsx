@@ -313,9 +313,18 @@ const SkillsSection: React.FC = () => {
                   }
                 >
                   <div className="absolute inset-0 rounded-xl z-0 border-ring" />
-                  <div className="relative z-10 w-full h-full flex flex-col items-center">
+                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 mb-3 sm:mb-4 flex items-center justify-center rounded-lg">
+                    {/* Glow */}
+                    <span
+                      className="absolute inset-0 rounded-lg opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70"
+                      style={{
+                        background: skill.color,
+                      }}
+                    />
+
+                    {/* Icon container */}
                     <div
-                      className={`w-14 h-14 sm:w-16 sm:h-16 mb-3 sm:mb-4 flex items-center justify-center rounded-lg ${
+                      className={`relative z-10 w-full h-full flex items-center justify-center rounded-lg ${
                         darkMode ? "bg-gray-700" : "bg-gray-100"
                       }`}
                     >
@@ -325,13 +334,6 @@ const SkillsSection: React.FC = () => {
                         className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
                       />
                     </div>
-                    <h3
-                      className={`font-semibold text-center text-sm sm:text-base ${
-                        darkMode ? "text-white" : "text-gray-900"
-                      }`}
-                    >
-                      {skill.name}
-                    </h3>
                   </div>
                 </div>
               </div>
