@@ -47,16 +47,16 @@ export const projects: Project[] = [
     },
     color: "#FF2D55",
     githubLink: "https://github.com/fauzul91/inventory-rsud",
-    year: 2026,
+    year: 2025,
     duration: "4 months",
     status: "Completed",
     overview:
-      "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
+      "SIMBA (Sistem Informasi Manajemen Barang dan Aset) is a web-based system designed to support the processes of goods receiving, ordering, stock recording, and inventory reporting in a centralized and digital manner. Through the implementation of this system, RSD Balung can accelerate internal business processes, reduce paper usage, and shorten document confirmation time. Overall, this system is expected to serve as an initial step toward sustainable digital transformation within the RSD Balung environment.",
     keyfeatures: [
-      "Role-based access (admin, verifikator, pemohon)",
-      "Form pengajuan dinamis + upload lampiran",
-      "Dashboard KPI & grafik aktivitas",
-      "Ekspor laporan (PDF/Excel)",
+      "Goods Inbound and Outbound Management",
+      "User Account Management",
+      "Automated Notifications and Reporting",
+      "Inventory Management",
     ],
   },
   {
@@ -81,10 +81,10 @@ export const projects: Project[] = [
     overview:
       "Simbako is a comprehensive training and education submission system built to support the tobacco industry in Jember. The platform provides solution for managing training programs, starting from the submission of applications by participants, verification and approval by authorized officers, scheduling of sessions, and monitoring the implementation process, up to the preparation of reports and evaluations. By shifting manual workflows into a structured online system, Simbako reduces administrative errors, ensures transparency in every stage of the process, and offers real-time access to training data. This initiative is expected to not only streamline the efficiency of training management but also improve the overall quality of human resources within the tobacco industry ecosystem in Jember and its surrounding regions.",
     keyfeatures: [
-      "Role-based access (admin, verifikator, pemohon)",
-      "Form pengajuan dinamis + upload lampiran",
-      "Dashboard KPI & grafik aktivitas",
-      "Ekspor laporan (PDF/Excel)",
+      "Online Training Application Submission",
+      "Verification & Approval Workflow",
+      "Training Schedule Management",
+      "Educational Articles Module",
     ],
   },
   {
@@ -109,9 +109,10 @@ export const projects: Project[] = [
     overview:
       "Sepadu is an integrated training management system developed to streamline the process of industry training in Jember Regency. The platform enables business owners and industry players to easily submit training requests to the Department of Trade and Industry through a centralized digital system. Beyond submission, Sepadu also supports the verification and approval process, scheduling of training sessions, monitoring of implementation, and preparation of comprehensive reports. By digitizing these workflows, Sepadu reduces bureaucratic complexity, increases transparency between stakeholders, and ensures that training programs can be delivered more effectively. In the long run, Sepadu is expected to enhance collaboration between local industries and the government, improve the accessibility of training resources, and strengthen the overall industrial ecosystem in Jember Regency.",
     keyfeatures: [
-      "Manajemen jadwal & kuota pelatihan",
-      "Notifikasi email untuk status pengajuan",
-      "Rekap kehadiran pelatihan",
+      "Digital Training Request Submission",
+      "Verification & Approval Workflow",
+      "Training Schedule Management",
+      "Request Status Tracking",
     ],
   },
   {
@@ -137,9 +138,9 @@ export const projects: Project[] = [
     overview:
       "IT Convert is a web-based platform initiated by the Information Systems Student Association (HIMASIF) to facilitate participation in competitions and the submission of proposals within the field of Information and Communication Technology (ICT). The system provides students and teams with a structured and user-friendly interface to register for competitions, upload and manage their proposals, and track the progress of their submissions. In addition to streamlining the registration process, IT Convert also includes features for administrators, such as proposal verification, evaluation panels, and archival management, ensuring that the entire competition workflow runs transparently and efficiently. By leveraging this platform, HIMASIF not only promotes student engagement in ICT-related competitions but also nurtures innovation, collaboration, and academic excellence among participants.",
     keyfeatures: [
-      "Multi-step form untuk pendaftaran tim",
-      "Preview & arsip proposal",
-      "Panel penilaian dewan juri",
+      "Online Competition Registration",
+      "Proposal Submission & Management",
+      "Competition Workflow Management",
     ],
   },
   {
@@ -149,7 +150,7 @@ export const projects: Project[] = [
     description:
       "A personal portfolio website designed to showcase personal profile, completed projects, technical skills, and organizational experience.",
     image: Portfolio,
-    role: "Front-End Developer",
+    role: "Frontend Developer",
     technologies: ["React", "Tailwind"],
     technologiesDetail: {
       backend: [],
@@ -164,9 +165,9 @@ export const projects: Project[] = [
     overview:
       "A personal portfolio website designed as a comprehensive platform to showcase an individual's professional profile, completed projects, technical expertise, and organizational experience. This website serves as both a digital resume and a personal brand hub, presenting information in a clean, modern, and interactive interface. Visitors can explore detailed descriptions of projects, view technical skills categorized by area of expertise, and gain insights into organizational involvement or achievements. The platform is also responsive and optimized for accessibility, ensuring a seamless experience across devices. Beyond functioning as a static profile, the portfolio website highlights the individual's adaptability, creativity, and commitment to continuous learning, making it an effective medium for networking, professional opportunities, and academic recognition.",
     keyfeatures: [
-      "Framer Motion animation",
-      "Dark/Light theme",
-      "Aksesibilitas & SEO dasar",
+      "Project Showcase",
+      "Tech Stack Visualization",
+      "Experience & Education Timeline",
     ],
   },
   {
@@ -190,9 +191,9 @@ export const projects: Project[] = [
     overview:
       "HeyBrew is a web-based Coffee Bean Management and Recommendation System developed for Dopy Coffee. This system is designed to help the business manage its coffee bean inventory more efficiently while also providing intelligent recommendations tailored to customer needs. By integrating digital management with recommendation features, HeyBrew aims to streamline daily operations, reduce errors in stock control, and enhance the overall customer experience at Dopy Coffee.",
     keyfeatures: [
-      "Framer Motion animation",
-      "Dark/Light theme",
-      "Aksesibilitas & SEO dasar",
+      "Product Catalog Management",
+      "Coffee Recipe Notes",
+      "Coffee Product Transactions",
     ],
   },
   {
@@ -202,7 +203,7 @@ export const projects: Project[] = [
     description:
       "SSO (Single Sign-On) is an authentication mechanism that allows users to access multiple applications or systems with a single login.",
     image: SSO,
-    role: "System Analyst",
+    role: "Backend Developer",
     technologies: ["Laravel", "PHP"],
     technologiesDetail: {
       backend: ["Laravel", "PHP", "MySQL"],
@@ -210,15 +211,14 @@ export const projects: Project[] = [
       tools: ["Git"],
     },
     color: "#FF2D55",
+    githubLink: "https://github.com/ahmadrahardan/sso-passport",
     year: 2025,
     duration: "4 months",
     status: "Completed",
     overview:
-      "HeyBrew is a web-based Coffee Bean Management and Recommendation System developed for Dopy Coffee. This system is designed to help the business manage its coffee bean inventory more efficiently while also providing intelligent recommendations tailored to customer needs. By integrating digital management with recommendation features, HeyBrew aims to streamline daily operations, reduce errors in stock control, and enhance the overall customer experience at Dopy Coffee.",
+      "SSO (Single Sign-On) is a web-based system that provides Single Sign-On (SSO) authentication services, allowing users from various hospital divisions (Super Admin, Warehouse Admin, PPK Team, Person in Charge, and Installation) to access all internal modules with a single login. The system improves work efficiency, data security, and user identity consistency across all integrated applications.",
     keyfeatures: [
-      "Framer Motion animation",
-      "Dark/Light theme",
-      "Aksesibilitas & SEO dasar",
+      "User management module for Super Admin",
     ],
   },
 ];
