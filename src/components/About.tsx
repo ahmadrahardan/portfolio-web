@@ -70,7 +70,7 @@ const AboutSection = () => {
       id="aboutme"
       className={`${
         darkMode ? "bg-gray-900" : "bg-white"
-      } relative overflow-hidden pb-20 pt-20 flex items-center justify-center transition-colors duration-500`}
+      } relative overflow-hidden pb-16 pt-28 flex items-center justify-center transition-colors duration-500`}
     >
       {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">

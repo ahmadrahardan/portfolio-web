@@ -108,7 +108,7 @@ const HomeSection = () => {
     <section
       ref={sectionRef}
       id="home"
-      className="relative isolate min-h-screen overflow-hidden flex items-center"
+      className="relative isolate overflow-hidden flex items-center"
     >
       <div
         className={`absolute inset-0 -z-30 bg-gradient-to-br ${

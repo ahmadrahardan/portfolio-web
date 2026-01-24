@@ -72,7 +72,7 @@ const CertificateSection = () => {
     <section
       ref={sectionRef}
       id="certificates"
-      className={`py-20 min-h-screen ${darkMode ? "bg-gray-900" : "bg-white"} relative overflow-hidden`}
+      className={`py-20 ${darkMode ? "bg-gray-900" : "bg-white"} relative overflow-hidden`}
     >
 
     {/* ======= CORNER GLOWS ======= */}
