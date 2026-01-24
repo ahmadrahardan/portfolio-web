@@ -78,7 +78,7 @@ const ExperienceEducationSection = () => {
       id="education"
       className={`${
         darkMode ? "bg-gray-900" : "bg-white"
-      } pt-24 pb-20 min-h-screen relative transition-colors duration-500`}
+      } pt-24 pb-20 relative transition-colors duration-500`}
     >
       {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">

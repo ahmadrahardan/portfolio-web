@@ -70,7 +70,7 @@ const AboutSection = () => {
       id="aboutme"
       className={`${
         darkMode ? "bg-gray-900" : "bg-white"
-      } relative overflow-hidden pb-20 pt-20 min-h-screen flex items-center justify-center transition-colors duration-500`}
+      } relative overflow-hidden pb-20 pt-20 flex items-center justify-center transition-colors duration-500`}
     >
       {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
@@ -135,7 +135,7 @@ const AboutSection = () => {
       </div>
       {/* ======= /CORNER GLOWS ======= */}
 
-      <div className="container mx-auto max-w-screen-xl px-5 md:px-10">
+      <div className="mx-auto max-w-screen-xl px-5 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
           {/* FOTO – hexagon dengan gradient dinamis */}
           <div
