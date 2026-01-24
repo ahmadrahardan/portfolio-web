@@ -25,7 +25,7 @@ export default function ProjectDetail() {
   const textSub = darkMode ? "text-gray-300" : "text-gray-600";
 
   return (
-    <div className={`${bg}`}>
+    <div className={`${bg} min-h-screen`}>
       <div className="max-w-6xl mx-auto px-5 md:px-8 pt-6 pb-24">
         {/* ===== Back ===== */}
         {/* <Link
