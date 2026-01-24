@@ -135,7 +135,7 @@ const AboutSection = () => {
       </div>
       {/* ======= /CORNER GLOWS ======= */}
 
-      <div className="mx-auto max-w-screen-xl px-5 md:px-10">
+      <div className="container mx-auto max-w-screen-xl px-5 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
           {/* FOTO – hexagon dengan gradient dinamis */}
           <div

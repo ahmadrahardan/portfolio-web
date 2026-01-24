@@ -172,7 +172,7 @@ const ExperienceEducationSection = () => {
           {/* EDUCATION */}
           <div>
             <h3
-              className={`text-2xl sm:text-3xl font-bold mb-6 ${
+              className={`text-center md:text-left text-2xl sm:text-3xl font-bold mb-6 ${
                 darkMode ? "text-white" : "text-slate-900"
               }`}
             >
@@ -191,7 +191,7 @@ const ExperienceEducationSection = () => {
           {/* EXPERIENCE */}
           <div>
             <h3
-              className={`text-2xl sm:text-3xl font-bold mb-6 ${
+              className={`text-center md:text-left text-2xl sm:text-3xl font-bold mb-6 ${
                 darkMode ? "text-white" : "text-slate-900"
               }`}
             >

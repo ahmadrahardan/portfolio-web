@@ -196,7 +196,7 @@ export default function ProjectDetail() {
           </div>
 
           {/* RIGHT SIDEBAR */}
-          <aside className="space-y-10 md:sticky md:top-10 self-start">
+          <aside className="hidden md:block space-y-10 md:sticky md:top-10 self-start">
             {/* Project Details */}
             <div>
               <h3 className={`text-2xl font-semibold ${textMain}`}>
