@@ -57,9 +57,8 @@ const HomeSection = () => {
   useEffect(() => {
     const toRotate = [
       "Information Systems Student",
-      "Fullstack Developer",
+      "Front-End Developer",
       "Back-End Developer",
-      "Business Enthusiast",
       "Tech Enthusiast",
     ];
     const period = 2000;
