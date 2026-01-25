@@ -90,12 +90,20 @@ export default function ProjectDetail() {
 
           {/* RIGHT */}
           <div className="w-full aspect-[16/9] rounded-2xl overflow-hidden shadow-xl">
-            <img
+            {/* <img
               src={p.image}
               alt={p.title}
               className="w-full h-full object-cover"
               loading="lazy"
               decoding="async"
+            /> */}
+            <video
+              src={p.video}
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
             />
           </div>
         </div>

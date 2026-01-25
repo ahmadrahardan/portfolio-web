@@ -5,6 +5,13 @@ import Portfolio from "../assets/Portfolio.webp";
 import HeyBrew from "../assets/HeyBrew.webp";
 import Simba from "../assets/Simba.webp";
 import SSO from "../assets/SSO.webp";
+import VSimbako from "../assets/simbakoo.mov";
+import VSepadu from "../assets/sepadu.mov";
+import VITC from "../assets/itconvert.mov";
+import VPortfolio from "../assets/wp.mov";
+import VHeyBrew from "../assets/heybrew.mov";
+import VSimba from "../assets/Simba.webm";
+import VSSO from "../assets/sso.mov";
 
 export type Project = {
   id: number;
@@ -27,7 +34,7 @@ export type Project = {
   status?: "Almost Done" | "Completed" | "In Progress" | string;
   overview?: string;
   keyfeatures?: string[];
-  videoUrl?: string;
+  video?: string;
 };
 
 export const projects: Project[] = [
@@ -38,6 +45,7 @@ export const projects: Project[] = [
     description:
       "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
     image: Simba,
+    video: VSimba,
     role: "Backend Developer",
     technologies: ["Laravel", "PHP"],
     technologiesDetail: {
@@ -66,6 +74,7 @@ export const projects: Project[] = [
     description:
       "Simbako is a training system for the tobacco industry in Jember, streamlining training applications and improving industry knowledge.",
     image: Simbako,
+    video: VSimbako,
     role: "Fullstack Developer",
     technologies: ["Laravel", "PHP", "Tailwind"],
     technologiesDetail: {
@@ -94,6 +103,7 @@ export const projects: Project[] = [
     description:
       "Sepadu is an integrated training platform for industries in Jember Regency to submit training requests.",
     image: Sepadu,
+    video: VSepadu,
     role: "Fullstack Developer",
     technologies: ["Laravel", "PHP", "Tailwind"],
     technologiesDetail: {
@@ -122,6 +132,7 @@ export const projects: Project[] = [
     description:
       "IT Convert is a website developed by the Information Systems Student Association for submitting and managing ICT competition proposals.",
     image: ITC,
+    video: VITC,
     role: "Frontend Developer",
     technologies: ["Laravel", "PHP", "Tailwind"],
     technologiesDetail: {
@@ -150,6 +161,7 @@ export const projects: Project[] = [
     description:
       "A personal portfolio website designed to showcase personal profile, completed projects, technical skills, and organizational experience.",
     image: Portfolio,
+    video: VPortfolio,
     role: "Frontend Developer",
     technologies: ["React", "Tailwind"],
     technologiesDetail: {
@@ -177,6 +189,7 @@ export const projects: Project[] = [
     description:
       "Hey Brew is a web-based coffee bean management and recommendation system for Dopy Coffee.",
     image: HeyBrew,
+    video: VHeyBrew,
     role: "System Analyst",
     technologies: ["Enterprise Architect"],
     technologiesDetail: {
@@ -203,6 +216,7 @@ export const projects: Project[] = [
     description:
       "SSO (Single Sign-On) is an authentication mechanism that allows users to access multiple applications or systems with a single login.",
     image: SSO,
+    video: VSSO,
     role: "Backend Developer",
     technologies: ["Laravel", "PHP"],
     technologiesDetail: {
