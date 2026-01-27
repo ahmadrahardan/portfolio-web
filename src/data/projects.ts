@@ -46,7 +46,7 @@ export const projects: Project[] = [
       "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
     image: Simba,
     video: VSimba,
-    role: "Backend Developer",
+    role: "Backend Developer for employee management features and reporting dashboards",
     technologies: ["Laravel", "PHP"],
     technologiesDetail: {
       backend: ["Laravel", "PHP", "MySQL"],
@@ -180,6 +180,7 @@ export const projects: Project[] = [
       "Project Showcase",
       "Tech Stack Visualization",
       "Experience & Education Timeline",
+      "Dark/Light Theme",
     ],
   },
   {
@@ -207,6 +208,7 @@ export const projects: Project[] = [
       "Product Catalog Management",
       "Coffee Recipe Notes",
       "Coffee Product Transactions",
+      "Product Sales Reports",
     ],
   },
   {
@@ -233,6 +235,7 @@ export const projects: Project[] = [
       "SSO (Single Sign-On) is a web-based system that provides Single Sign-On (SSO) authentication services, allowing users from various hospital divisions (Super Admin, Warehouse Admin, PPK Team, Person in Charge, and Installation) to access all internal modules with a single login. The system improves work efficiency, data security, and user identity consistency across all integrated applications.",
     keyfeatures: [
       "User management module for Super Admin",
+      "Centralized Authentication",
     ],
   },
 ];
