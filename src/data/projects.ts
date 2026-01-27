@@ -43,7 +43,7 @@ export const projects: Project[] = [
     slug: "simba",
     title: "SIMBA",
     description:
-      "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management.",
+      "SIMBA is a web-based system that enables the comprehensive integration of asset management and inventory control processes, including general warehouse management. In this system, I contribute as backend developer for employee management features and reporting dashboards",
     image: Simba,
     video: VSimba,
     role: "Backend Developer for employee management features and reporting dashboards",
