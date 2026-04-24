@@ -3,13 +3,14 @@ import { ExternalLink } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
 import sepadu from "../assets/certificates/Sertifikat HKI Sepadu.webp";
-import uxLaos from "../assets/certificates/Sertifikat UIUX.webp";
-import gitLaos from "../assets/certificates/Sertifikat Pelatihan GIT.webp";
+// import uxLaos from "../assets/certificates/Sertifikat UIUX.webp";
+// import gitLaos from "../assets/certificates/Sertifikat Pelatihan GIT.webp";
 import hkiPdf from "../assets/certificates/Sertifikat_SISTEM PELATIHAN TERPADU UNTUK SELURUH INDUSTRI DI KABUPATEN JEMBER.pdf";
 import simba from "../assets/certificates/Sertifikat HKI SIMBA.webp";
 import hkiSIMBA from "../assets/certificates/Sertifikat_SIMBA.pdf";
-import expo from "../assets/certificates/Sertifikat Expo Capstone.webp";
+// import expo from "../assets/certificates/Sertifikat Expo Capstone.webp";
 // import fest from "../assets/certificates/Sertifikat Entrepreneurship.webp";
+import j from "../assets/certificates/Joko-Widodo.jpg";
 
 interface Certificate {
   id: string;
@@ -26,40 +27,47 @@ const CertificateSection = () => {
   const certificates: Certificate[] = [
     {
       id: "1",
-      title: "Sertifikat HKI Sistem Pelatihan Terpadu untuk Seluruh Industri di Kabupaten Jember",
+      title: "Sistem Pelatihan Terpadu untuk Seluruh Industri di Kabupaten Jember",
       link: hkiPdf,
       image: sepadu,
     },
     {
       id: "2",
-      title: "Sertifikat HKI SIMBA (Sistem Informasi Manajemen Barang dan Aset)",
+      title: "SIMBA (Sistem Informasi Manajemen Barang dan Aset)",
       link: hkiSIMBA,
       image: simba,
     },
-    {
-      id: "3",
-      title: "Sertifikat Expo Capstone Project",
-      link: expo,
-      image: expo,
-    },
-    {
-      id: "4",
-      title: "Pelatihan Dasar UI/UX",
-      link: uxLaos,
-      image: uxLaos,
-    },
-    {
-      id: "5",
-      title: "Pelatihan GIT",
-      link: gitLaos,
-      image: gitLaos,
-    },
+    // {
+    //   id: "3",
+    //   title: "Sertifikat Expo Capstone Project",
+    //   link: expo,
+    //   image: expo,
+    // },
     // {
     //   id: "4",
+    //   title: "Pelatihan Dasar UI/UX",
+    //   link: uxLaos,
+    //   image: uxLaos,
+    // },
+    // {
+    //   id: "5",
+    //   title: "Pelatihan GIT",
+    //   link: gitLaos,
+    //   image: gitLaos,
+    // },
+    // {
+    //   id: "6",
     //   title: "Sertifikat Pelatihan Entrepreneurship",
     //   link: "https://www.dicoding.com/certificates/NVP7483DOPR0",
     //   image: fest,
     // },
+    {
+      id: "7",
+      title: "Ijazah Asli",
+      link: "",
+      image: j,
+    },
+
   ];
 
   const handleCertificateClick = (cert: Certificate) => {

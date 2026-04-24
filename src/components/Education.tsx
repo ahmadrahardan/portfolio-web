@@ -19,7 +19,7 @@ const experience: Item[] = [
   },
   {
     year: "Feb 2025 - Sep 2025",
-    desc1: "Secretariat Division Staff (Website Administrator)",
+    desc1: "Secretariat Division Staff",
     desc2: "IT-CONVERT & PICTURE 2025",
   },
   {
@@ -30,11 +30,11 @@ const experience: Item[] = [
 ];
 
 const education: Item[] = [
-  {
-    year: "2020 - 2023",
-    desc1: "Senior High School 1 Jember",
-    desc2: "Science & Math",
-  },
+  // {
+  //   year: "2020 - 2023",
+  //   desc1: "Senior High School 1 Jember",
+  //   desc2: "Science & Math",
+  // },
   {
     year: "2023 - Present",
     desc1: "University of Jember",

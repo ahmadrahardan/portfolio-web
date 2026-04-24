@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
-import fotoFormalku from "../assets/Rahar_3.png";
+import fotoFormalku from "../assets/mike.jpg";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
@@ -205,15 +205,7 @@ const AboutSection = () => {
                 darkMode ? "text-slate-300" : "text-slate-600"
               } leading-8 max-w-4xl text-md sm:text-xl`}
             >
-              A highly motivated and adaptable sixth-semester Information
-              Systems student at the Faculty of Computer Science, University of
-              Jember (GPA 3.96), with a strong passion for information
-              technology development. Skilled in teamwork, communication, and
-              problem-solving with hands-on experience in developing web
-              applications using Laravel, Blade, React, Tailwind, and managing
-              databases efficiently with MySQL. Currently deepening expertise in
-              web development to build high-performance, responsive websites
-              with intuitive user experiences.
+              A highly motivated sixth-semester Information Systems student at the Faculty of Computer Science, University of Jember (GPA 3.96) with a strong interest in information technology development. Experienced in building web applications using Laravel, Blade, React, and Tailwind, as well as managing databases with MySQL. Possesses strong teamwork, communication, and problem-solving skills.
             </p>
           </div>
         </div>
