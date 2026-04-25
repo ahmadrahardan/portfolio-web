@@ -10,7 +10,7 @@ import simba from "../assets/certificates/Sertifikat HKI SIMBA.webp";
 import hkiSIMBA from "../assets/certificates/Sertifikat_SIMBA.pdf";
 // import expo from "../assets/certificates/Sertifikat Expo Capstone.webp";
 // import fest from "../assets/certificates/Sertifikat Entrepreneurship.webp";
-import j from "../assets/certificates/Joko-Widodo.jpg";
+// import j from "../assets/certificates/Joko-Widodo.jpg";
 
 interface Certificate {
   id: string;
@@ -61,12 +61,12 @@ const CertificateSection = () => {
     //   link: "https://www.dicoding.com/certificates/NVP7483DOPR0",
     //   image: fest,
     // },
-    {
-      id: "7",
-      title: "Ijazah Asli",
-      link: "",
-      image: j,
-    },
+    // {
+    //   id: "7",
+    //   title: "Ijazah Asli",
+    //   link: "",
+    //   image: j,
+    // },
 
   ];
 
