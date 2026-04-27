@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
-import profilePhoto from "../assets/Nick_Wilde.jpg";
+import profilePhoto from "../assets/RHD.jpg";
 import cvPdf from "../assets/CV Ahmad Rahardan ATS.pdf";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
@@ -57,8 +57,7 @@ const HomeSection = () => {
   useEffect(() => {
     const toRotate = [
       "Information Systems Student",
-      "Vibe Coder",
-      "ChatGPT Prompter",
+      "Website Developer",
       "Tech Enthusiast",
     ];
     const period = 2000;

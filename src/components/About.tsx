@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
-import fotoFormalku from "../assets/mike.jpg";
+import fotoFormalku from "../assets/Rahar_3.png";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 

@@ -30,11 +30,11 @@ const experience: Item[] = [
 ];
 
 const education: Item[] = [
-  // {
-  //   year: "2020 - 2023",
-  //   desc1: "Senior High School 1 Jember",
-  //   desc2: "Science & Math",
-  // },
+  {
+    year: "2020 - 2023",
+    desc1: "Senior High School 1 Jember",
+    desc2: "Science & Math",
+  },
   {
     year: "2023 - Present",
     desc1: "University of Jember",
