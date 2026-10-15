@@ -1,6 +1,7 @@
-
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 
@@ -11,6 +12,8 @@ import hkiPdf from "../assets/certificates/Sertifikat_SISTEM PELATIHAN TERPADU U
 import simba from "../assets/certificates/Sertifikat HKI SIMBA.webp";
 import hkiSIMBA from "../assets/certificates/Sertifikat_SIMBA.pdf";
 import expo from "../assets/certificates/Sertifikat Expo Capstone.webp";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Certificate {
   id: string;
@@ -87,7 +90,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
       className="group relative block w-full cursor-pointer"
       style={{ WebkitTapHighlightColor: "transparent" }}
     >
-      {/* Outer Card */}
       <motion.div
         variants={{
           rest: { y: 0 },
@@ -100,7 +102,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
         }}
         className="relative h-[370px] sm:h-[400px] overflow-hidden rounded-[25px] border-[7px] border-[#FF2D55] bg-[#FF2D55] shadow-xl"
       >
-        {/* IMAGE BACKGROUND */}
         <div className="absolute inset-0 overflow-hidden rounded-[18px] bg-gray-800">
           <motion.img
             src={cert.image}
@@ -117,11 +118,9 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
             className="h-full w-full object-cover object-top"
           />
 
-          {/* Gradient overlay */}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/35" />
         </div>
 
-        {/* FOLDER FRONT - SLIDES DOWN */}
         <motion.div
           variants={{
             rest: { y: "0%" },
@@ -135,7 +134,7 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
           }}
           className="absolute bottom-0 left-0 right-0 z-20 h-[72%]"
         >
-          {/* Folder silhouette */}
+
           <div
             className="absolute inset-0"
             style={{
@@ -146,7 +145,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
             }}
           />
 
-          {/* Soft highlight */}
           <div
             className="pointer-events-none absolute inset-0 opacity-10"
             style={{
@@ -157,7 +155,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
             }}
           />
 
-          {/* Number */}
           <div
             className="absolute left-5 top-[12%] sm:left-6"
             style={{ color: textColor }}
@@ -167,7 +164,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
             </span>
           </div>
 
-          {/* Arrow */}
           <div
             className="absolute right-5 top-[15%] sm:right-6"
             style={{ color: textColor }}
@@ -179,7 +175,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
             />
           </div>
 
-          {/* Text content */}
           <div className="absolute bottom-6 left-5 right-5 sm:left-6 sm:right-6">
             <h3
               className="mb-2 line-clamp-2 text-lg font-bold leading-snug sm:text-xl"
@@ -197,7 +192,6 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
           </div>
         </motion.div>
 
-        {/* Hover indicator */}
         <motion.div
           variants={{
             rest: { opacity: 0, y: 8 },
@@ -214,16 +208,115 @@ function FolderCard({ cert, darkMode }: FolderCardProps) {
 }
 
 export default function CertificateSection() {
-  const sectionRef = useRef<HTMLElement>(null);
   const { darkMode } = useTheme();
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const introTimelineRef = useRef<gsap.core.Timeline | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const heading = headingRef.current;
+    const grid = gridRef.current;
+
+    if (!section || !heading || !grid) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion) return;
+
+    const ctx = gsap.context(() => {
+      const headingElements = Array.from(heading.children);
+
+      const timeline = gsap.timeline({
+        paused: true,
+        defaults: {
+          ease: "power3.out",
+        },
+      });
+
+      timeline.fromTo(
+        headingElements,
+        {
+          opacity: 0,
+          y: 35,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+        }
+      );
+
+      timeline.fromTo(
+        Array.from(grid.children),
+        {
+          opacity: 0,
+          y: 35,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.1,
+        },
+        "-=0.35"
+      );
+
+      introTimelineRef.current = timeline;
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 85%",
+        end: "bottom top",
+        onEnter: () => timeline.restart(),
+        onEnterBack: () => timeline.restart(),
+      });
+    }, section);
+
+    const replayIntro = () => {
+      const section = sectionRef.current;
+      const timeline = introTimelineRef.current;
+
+      if (!section || !timeline) return;
+
+      const rect = section.getBoundingClientRect();
+
+      if (
+        rect.top < window.innerHeight * 0.85 &&
+        rect.bottom > 0
+      ) {
+        timeline.restart();
+      }
+    };
+
+    window.addEventListener(
+      "portfolio-certificates-intro",
+      replayIntro
+    );
+
+    return () => {
+      window.removeEventListener(
+        "portfolio-certificates-intro",
+        replayIntro
+      );
+
+      introTimelineRef.current = null;
+      ctx.revert();
+    };
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       id="certificates"
-      className={`relative overflow-hidden py-20 transition-colors duration-500 bg-transparent`}
+      className="relative overflow-hidden bg-transparent py-20 transition-colors duration-500"
     >
-      {/* BACKGROUND GLOW */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="absolute -right-72 bottom-0 h-[600px] w-[600px] rounded-full blur-[90px]"
@@ -236,8 +329,10 @@ export default function CertificateSection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-screen-xl px-5 md:px-10">
-        {/* SECTION TITLE */}
-        <div className="mb-14 text-center">
+        <div
+          ref={headingRef}
+          className="mb-14 text-center"
+        >
           <h2
             className={`mb-4 text-4xl font-extrabold md:text-6xl ${
               darkMode ? "text-white" : "text-gray-900"
@@ -245,27 +340,36 @@ export default function CertificateSection() {
           >
             <span className="relative inline-block">
               Certificates
+
               <span className="absolute -bottom-2 left-0 h-0.5 w-full bg-gradient-to-r from-transparent via-red-400 to-transparent" />
             </span>
           </h2>
 
           <p
             className={`text-lg ${
-              darkMode ? "text-gray-400" : "text-gray-600"
+              darkMode
+                ? "text-gray-400"
+                : "text-gray-600"
             }`}
           >
             Certificates I've earned
           </p>
         </div>
 
-        {/* FOLDER CARDS */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8"
+        >
           {certificates.map((cert) => (
-            <FolderCard
+            <div
               key={cert.id}
-              cert={cert}
-              darkMode={darkMode}
-            />
+              className="certificate-item min-w-0"
+            >
+              <FolderCard
+                cert={cert}
+                darkMode={darkMode}
+              />
+            </div>
           ))}
         </div>
       </div>

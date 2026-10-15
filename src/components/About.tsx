@@ -1,12 +1,11 @@
-
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
+
 import fotoFormalku from "../assets/RHD.jpg";
-import PixelHoverCard from "./PixelHoverCard";
 import fotoKedua from "../assets/Rahar_2.png";
-import { motion } from "framer-motion";
+import PixelHoverCard from "./PixelHoverCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +15,7 @@ const AboutSection = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const { darkMode } = useTheme();
+  const introTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const passions = [
     {
@@ -33,75 +33,79 @@ const AboutSection = () => {
   ];
 
   useEffect(() => {
-    if (!sectionRef.current) return;
+    const section = sectionRef.current;
+    const photo = photoRef.current;
+    const content = contentRef.current;
+
+    if (!section || !photo || !content) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
+      const textElements = Array.from(content.children);
+
+      const timeline = gsap.timeline({
+        paused: true,
         defaults: {
           ease: "power3.out",
         },
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 85%",
-          once: true,
-        },
       });
 
-      // Animasi foto masuk dari kiri
-      if (photoRef.current) {
-        tl.fromTo(
-          photoRef.current,
-          {
-            x: -40,
-            opacity: 0,
-          },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 1,
-          }
-        );
+      timeline.fromTo(
+        photo,
+        { opacity: 0, y: 35 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          clearProps: "opacity,transform",
+        },
+        0,
+      );
+
+      timeline.fromTo(
+        textElements,
+        { opacity: 0, y: 35 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          clearProps: "opacity,transform",
+        },
+        0.15,
+      );
+
+      introTimelineRef.current = timeline;
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 80%",
+        end: "bottom top",
+        onEnter: () => timeline.restart(),
+        onEnterBack: () => timeline.restart(),
+      });
+    }, section);
+
+    const replayIntro = () => {
+      const timeline = introTimelineRef.current;
+      const section = sectionRef.current;
+
+      if (!timeline || !section) return;
+
+      const rect = section.getBoundingClientRect();
+
+      if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+        timeline.restart();
       }
+    };
 
-      // Animasi konten selain heading About Me
-      if (contentRef.current) {
-        const elements = Array.from(
-          contentRef.current.children
-        ).filter(
-          (element) =>
-            !element.classList.contains("about-heading")
-        );
+    window.addEventListener("portfolio-about-intro", replayIntro);
 
-        tl.fromTo(
-          elements,
-          {
-            y: 24,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            stagger: 0.12,
-            clearProps: "transform,opacity",
-          },
-          "-=0.8"
-        );
-      }
+    return () => {
+      window.removeEventListener("portfolio-about-intro", replayIntro);
 
-      // Efek foto bergerak naik turun
-      if (photoRef.current) {
-        gsap.to(photoRef.current, {
-          y: 12,
-          duration: 3,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
+      introTimelineRef.current = null;
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -121,7 +125,6 @@ const AboutSection = () => {
         bg-transparent
       "
     >
-      {/* CORNER GLOW */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <style>
           {`
@@ -131,7 +134,6 @@ const AboutSection = () => {
               height: 28rem;
               filter: blur(40px);
               opacity: 0.30;
-              will-change: transform, opacity;
               background: radial-gradient(
                 closest-side,
                 var(--glowColor) 0%,
@@ -162,10 +164,25 @@ const AboutSection = () => {
         />
       </div>
 
-      {/* MAIN CONTAINER */}
-      <div className="relative z-10 mx-auto w-full max-w-screen-xl px-5 md:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-
+      <div
+        className="
+          relative z-10
+          mx-auto
+          w-full
+          max-w-screen-xl
+          px-5
+          md:px-10
+        "
+      >
+        <div
+          className="
+            grid
+            grid-cols-1
+            md:grid-cols-12
+            gap-12
+            items-center
+          "
+        >
           {/* FOTO PROFIL */}
           <div
             ref={photoRef}
@@ -174,7 +191,6 @@ const AboutSection = () => {
               flex
               justify-center
               md:justify-start
-              will-change-transform
             "
           >
             <PixelHoverCard
@@ -185,7 +201,6 @@ const AboutSection = () => {
             />
           </div>
 
-          {/* KONTEN ABOUT ME */}
           <div
             ref={contentRef}
             className="
@@ -194,45 +209,17 @@ const AboutSection = () => {
               md:text-left
             "
           >
-            {/* HEADING ABOUT ME */}
-            <motion.h2
-              initial={{
-                opacity: 0,
-                y: 25,
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.1,
-              }}
-              transition={{
-                duration: 0.7,
-                delay: 0.1,
-                ease: "easeOut",
-              }}
+            <h2
               className={`
-                about-heading
                 mt-4
                 text-4xl
                 font-extrabold
                 md:text-6xl
-                ${
-                  darkMode
-                    ? "text-white"
-                    : "text-slate-900"
-                }
+                ${darkMode ? "text-white" : "text-slate-900"}
               `}
             >
               <span className="relative inline-block">
-                About{" "}
-                <span className="text-[#FF2D55]">
-                  Me
-                </span>
-
-                {/* Garis gradient bawah heading */}
+                About <span className="text-[#FF2D55]">Me</span>
                 <span
                   className="
                     absolute
@@ -247,9 +234,8 @@ const AboutSection = () => {
                   "
                 />
               </span>
-            </motion.h2>
+            </h2>
 
-            {/* SUBTITLE */}
             <h3
               className={`
                 text-xl
@@ -257,17 +243,12 @@ const AboutSection = () => {
                 font-semibold
                 mt-2
                 mb-5
-                ${
-                  darkMode
-                    ? "text-white"
-                    : "text-slate-900"
-                }
+                ${darkMode ? "text-white" : "text-slate-900"}
               `}
             >
               Step into my journey!
             </h3>
 
-            {/* DESCRIPTION */}
             <p
               className={`
                 leading-7
@@ -275,26 +256,18 @@ const AboutSection = () => {
                 text-base
                 sm:text-lg
                 tracking-[.05em]
-                ${
-                  darkMode
-                    ? "text-slate-300"
-                    : "text-slate-600"
-                }
+                ${darkMode ? "text-slate-300" : "text-slate-600"}
               `}
             >
-              A highly motivated sixth-semester Information
-              Systems student at the Faculty of Computer
-              Science, University of Jember (GPA 3.96)
-              with a strong interest in information
-              technology development. Experienced in
-              building web applications using Laravel,
-              Blade, React, and Tailwind, as well as
-              managing databases with MySQL. Possesses
-              strong teamwork, communication, and
-              problem-solving skills.
+              A highly motivated sixth-semester Information Systems student at
+              the Faculty of Computer Science, University of Jember (GPA 3.96)
+              with a strong interest in information technology development.
+              Experienced in building web applications using Laravel, Blade,
+              React, and Tailwind, as well as managing databases with MySQL.
+              Possesses strong teamwork, communication, and problem-solving
+              skills.
             </p>
 
-            {/* PASSION BADGES */}
             <div
               className="
                 mt-8

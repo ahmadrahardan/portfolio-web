@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-// import logo from "../assets/logoo.png";
 
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
@@ -100,6 +99,7 @@ const Navbar: React.FC = () => {
     link: string,
   ) => {
     e.preventDefault();
+
     setActiveLink(link);
     setIsOpen(false);
 
@@ -119,12 +119,36 @@ const Navbar: React.FC = () => {
     }
 
     const el = document.getElementById(link);
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.pageYOffset; // no offset
-    window.scrollTo({ top, behavior: "smooth" });
-  };
 
-  // Observer untuk highlight nav
+    if (!el) return;
+
+    const top = el.getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+      top,
+      behavior: "smooth",
+    });
+
+    if (link === "aboutme") {
+      window.dispatchEvent(new Event("portfolio-about-intro"));
+    }
+
+    if (link === "education") {
+      window.dispatchEvent(new Event("portfolio-education-intro"));
+    }
+
+    if (link === "skills") {
+      window.dispatchEvent(new Event("portfolio-skills-intro"));
+    }
+
+    if (link === "projects") {
+      window.dispatchEvent(new Event("portfolio-projects-intro"));
+    }
+
+    if (link === "certificates") {
+      window.dispatchEvent(new Event("portfolio-certificates-intro"));
+    }
+  };
 
   useEffect(() => {
     const updateActiveSection = () => {
@@ -145,19 +169,15 @@ const Navbar: React.FC = () => {
         }
       });
 
-      // Update Navbar dan simpan section aktif
       setActiveLink(currentSection);
 
       sessionStorage.setItem("portfolio-active-section", currentSection);
     };
 
-    // Deteksi saat pengguna scroll
     window.addEventListener("scroll", updateActiveSection, {
       passive: true,
     });
 
-    // Jangan langsung menjalankan updateActiveSection
-    // saat mount karena scroll mungkin sedang dipulihkan.
     return () => {
       window.removeEventListener("scroll", updateActiveSection);
     };
@@ -172,8 +192,6 @@ const Navbar: React.FC = () => {
     >
       <div className="mx-auto max-w-screen-xl px-6 sm:px-1 lg:px-1">
         <div className="flex justify-between items-center h-16">
-          {/* Brand */}
-
           {/* <a
             href="#home"
             className="flex items-center gap-4"
@@ -206,7 +224,6 @@ const Navbar: React.FC = () => {
             </span>
           </a>
 
-          {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-6">
             <ul className="flex items-center gap-4">
               {NAV_ITEMS.map((item) => {
@@ -250,7 +267,6 @@ const Navbar: React.FC = () => {
             <ThemeToggle checked={darkMode} onChange={toggleDarkMode} />
           </div>
 
-          {/* Mobile burger */}
           <div className="lg:hidden flex items-center">
             <button
               onClick={toggleMenu}
@@ -284,7 +300,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isOpen && (
         <div
           className="lg:hidden absolute top-full left-0 right-0 w-full z-50 shadow-lg"

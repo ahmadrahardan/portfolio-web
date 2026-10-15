@@ -1,8 +1,11 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
 import Lanyard from "./Lanyard";
 import cvPdf from "../assets/CV Ahmad Rahardan ATS.pdf";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HomeSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -21,23 +24,26 @@ const HomeSection = () => {
     document.body.removeChild(link);
   };
 
-  // Animasi intro GSAP
   useEffect(() => {
-    if (!sectionRef.current || !textRef.current) return;
+    const section = sectionRef.current;
+    const text = textRef.current;
+    const lanyard = lanyardRef.current;
+
+    if (!section || !text) return;
 
     const ctx = gsap.context(() => {
-      const textElements = Array.from(textRef.current!.children);
+      const textElements = Array.from(text.children);
 
       const timeline = gsap.timeline({
+        paused: true,
         defaults: {
           ease: "power3.out",
         },
       });
 
-      // Animasi Lanyard pada mobile
-      if (lanyardRef.current) {
+      if (lanyard) {
         timeline.fromTo(
-          lanyardRef.current,
+          lanyard,
           {
             opacity: 0,
             y: -35,
@@ -51,7 +57,7 @@ const HomeSection = () => {
         );
       }
 
-      // Animasi teks masuk satu per satu
+      // Animasi teks Home
       timeline.fromTo(
         textElements,
         {
@@ -69,15 +75,26 @@ const HomeSection = () => {
       );
 
       introTimelineRef.current = timeline;
-    }, sectionRef);
 
-    // Jalankan ulang animasi saat Navbar Home diklik
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 85%",
+        end: "bottom top",
+
+        onEnter: () => {
+          timeline.restart();
+        },
+
+        onEnterBack: () => {
+          timeline.restart();
+        },
+      });
+
+      ScrollTrigger.refresh();
+    }, section);
+
     const replayIntro = () => {
-      const timeline = introTimelineRef.current;
-
-      if (!timeline) return;
-
-      timeline.restart();
+      introTimelineRef.current?.restart();
     };
 
     window.addEventListener("portfolio-home-intro", replayIntro);
@@ -90,7 +107,6 @@ const HomeSection = () => {
     };
   }, []);
 
-  // Efek typewriter
   useEffect(() => {
     const toRotate = [
       "Information Systems Student",
@@ -162,7 +178,6 @@ const HomeSection = () => {
         bg-transparent
       "
     >
-      {/* BACKGROUND GLOW */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
@@ -180,50 +195,46 @@ const HomeSection = () => {
         }}
       />
 
-      {/* MOBILE & TABLET LANYARD */}
       <div
         ref={lanyardRef}
         className="
-    relative z-20
-    w-full
-    h-[560px]
-    sm:h-[600px]
-    md:h-[650px]
-    lg:hidden
-    mt-4
-    mb-4
-    sm:mb-6
-    overflow-hidden
-    shrink-0
-    pointer-events-auto
-  "
+          relative z-20
+          w-full
+          h-[555px]
+          sm:h-[600px]
+          md:h-[650px]
+          lg:hidden
+          mt-4
+          mb-4
+          sm:mb-6
+          overflow-hidden
+          shrink-0
+          pointer-events-auto
+        "
       >
         <Lanyard />
       </div>
 
-      {/* DESKTOP LANYARD: BACKGROUND */}
-      {/* DESKTOP LANYARD */}
       <div
         className="
-    hidden lg:block
-    absolute inset-0
-    z-0
-    overflow-hidden
-    pointer-events-auto
-  "
+          hidden lg:block
+          absolute inset-0
+          z-0
+          overflow-hidden
+          pointer-events-auto
+        "
       >
         <Lanyard />
       </div>
 
-      {/* CONTENT */}
       <div
         className="
-    relative z-10
-    w-full max-w-[1920px] mx-auto
-    px-6 sm:px-8 lg:px-[8%]
-    pb-16 pt-5 lg:py-16
-    lg:pointer-events-none
-  "
+          relative z-10
+          w-full max-w-[1920px] mx-auto
+          px-6 sm:px-8 lg:px-[8%]
+          pb-16 pt-5 lg:py-16
+          lg:pointer-events-none
+        "
       >
         <div
           className="
@@ -234,16 +245,15 @@ const HomeSection = () => {
             gap-y-10
           "
         >
-          {/* INTRO TEXT */}
           <div
             ref={textRef}
             className="
-    lg:col-span-6
-    flex flex-col
-    items-center text-center
-    lg:items-start lg:text-left
-    lg:pointer-events-auto
-  "
+              lg:col-span-6
+              flex flex-col
+              items-center text-center
+              lg:items-start lg:text-left
+              lg:pointer-events-auto
+            "
           >
             {/* GREETING */}
             <p

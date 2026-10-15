@@ -1,8 +1,13 @@
-import { useState, useRef, useMemo } from "react";
-import { motion } from "framer-motion";
+
+import { useState, useRef, useMemo, useEffect } from "react";
+import type { CSSProperties } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
 import bladeIcon from "../assets/blade.webp";
 import canvaIcon from "../assets/canva.webp";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Skill = {
   name: string;
@@ -13,8 +18,14 @@ type Skill = {
 
 const SkillsSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"tech" | "tools">("tech");
-  const techTabRef = useRef<HTMLButtonElement>(null);
-  const toolsTabRef = useRef<HTMLButtonElement>(null);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const introTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const hasAnimatedRef = useRef(false);
+
   const { darkMode } = useTheme();
 
   const skills: Skill[] = useMemo(
@@ -37,7 +48,12 @@ const SkillsSection: React.FC = () => {
         type: "tech",
         color: "#06B6D4",
       },
-      { name: "Blade", icon: bladeIcon, type: "tech", color: "#FF2D20" },
+      {
+        name: "Blade",
+        icon: bladeIcon,
+        type: "tech",
+        color: "#FF2D20",
+      },
       {
         name: "PHP",
         icon: "https://cdn.simpleicons.org/php/777BB4",
@@ -123,196 +139,350 @@ const SkillsSection: React.FC = () => {
         color: "#1E88E5",
       },
     ],
-    [],
+    []
   );
 
   const themeBorderStops = darkMode
     ? ["#FF2D55", "#ff7ab7", "#2563eb"]
     : ["#d97706", "#dc2626", "#a21caf"];
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    const heading = headingRef.current;
+    const tabs = tabsRef.current;
+    const grid = gridRef.current;
+
+    if (!section || !heading || !tabs || !grid) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      const timeline = gsap.timeline({
+        paused: true,
+        defaults: {
+          ease: "power3.out",
+        },
+      });
+
+      timeline.fromTo(
+        Array.from(heading.children),
+        {
+          opacity: 0,
+          y: 35,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          clearProps: "opacity,transform",
+        }
+      );
+
+      timeline.fromTo(
+        tabs,
+        {
+          opacity: 0,
+          y: 35,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          clearProps: "opacity,transform",
+        },
+        "-=0.5"
+      );
+
+      timeline.fromTo(
+        Array.from(grid.children),
+        {
+          opacity: 0,
+          y: 35,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.06,
+          clearProps: "opacity,transform",
+        },
+        "-=0.45"
+      );
+
+      introTimelineRef.current = timeline;
+
+      const playIntro = () => {
+        hasAnimatedRef.current = true;
+        timeline.restart();
+      };
+
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 85%",
+        end: "bottom top",
+        onEnter: playIntro,
+        onEnterBack: playIntro,
+      });
+    }, section);
+
+    const replayIntro = () => {
+      const section = sectionRef.current;
+      const timeline = introTimelineRef.current;
+
+      if (!section || !timeline) return;
+
+      const rect = section.getBoundingClientRect();
+
+      if (
+        rect.top < window.innerHeight * 0.85 &&
+        rect.bottom > 0
+      ) {
+        hasAnimatedRef.current = true;
+        timeline.restart();
+      }
+    };
+
+    window.addEventListener(
+      "portfolio-skills-intro",
+      replayIntro
+    );
+
+    return () => {
+      window.removeEventListener(
+        "portfolio-skills-intro",
+        replayIntro
+      );
+
+      introTimelineRef.current = null;
+      ctx.revert();
+    };
+  }, []);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+
+    if (!grid || !hasAnimatedRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        Array.from(grid.children),
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          stagger: 0.04,
+          ease: "power2.out",
+          overwrite: "auto",
+          clearProps: "opacity,transform",
+        }
+      );
+    }, grid);
+
+    return () => ctx.revert();
+  }, [activeTab]);
+
   return (
     <section
+      ref={sectionRef}
       id="skills"
-      className={`pb-20 pt-20 relative bg-transparent transition-colors duration-500`}
+      className="relative bg-transparent pb-20 pt-20 transition-colors duration-500"
     >
-      {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <style>{`
-    .about-glow{
-      position:absolute;
-      width:28rem;height:28rem;
-      filter:blur(40px);
-      opacity:.30;
-      will-change:transform,opacity;
-      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
-    }
-    @media (min-width:768px){
-      .about-glow{width:44rem;height:44rem}
-    }
-  `}</style>
+        <style>
+          {`
+            .skills-glow {
+              position: absolute;
+              width: 28rem;
+              height: 28rem;
+              filter: blur(40px);
+              opacity: 0.30;
+              background: radial-gradient(
+                closest-side,
+                var(--glowColor) 0%,
+                rgba(0,0,0,0) 70%
+              );
+            }
 
-        {/* top-left */}
-        {/* <span
-          className="about-glow"
-          style={{
-            left: "-20rem",
-            top: "1rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(255,45,85,0.9)"
-              : "rgba(255,45,85,0.6)",
-          }}
-        /> */}
-        {/* top-right */}
-        {/* <span
-          className="about-glow"
-          style={{
-            right: "-10rem",
-            top: "-20rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(168,85,247,0.8)"
-              : "rgba(168,85,247,0.55)",
-          }}
-        /> */}
-        {/* bottom-left */}
-        {/* <span
-          className="about-glow"
-          style={{
-            left: "-14rem",
-            bottom: "-18rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(59,130,246,0.85)"
-              : "rgba(59,130,246,0.5)",
-          }}
-        /> */}
-        {/* bottom-right */}
+            @media (min-width: 768px) {
+              .skills-glow {
+                width: 44rem;
+                height: 44rem;
+              }
+            }
+          `}
+        </style>
+
         <span
-          className="about-glow"
-          style={{
-            right: "-25rem",
-            bottom: "-1rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(255,45,85,0.9)"
-              : "rgba(255,45,85,0.6)",
-          }}
+          className="skills-glow"
+          style={
+            {
+              right: "-25rem",
+              bottom: "-1rem",
+              "--glowColor": darkMode
+                ? "rgba(255,45,85,0.9)"
+                : "rgba(255,45,85,0.6)",
+            } as CSSProperties
+          }
         />
       </div>
-      {/* ======= /CORNER GLOWS ======= */}
 
-      <style>{`
-        .border-ring {
-          --thickness: 2px;
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-          padding: var(--thickness);
-          pointer-events: none;
-          background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
-          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          -webkit-mask-composite: xor;
-                  mask-composite: exclude;
-        }
-        .skill-card .focusable-card {
-          transition: transform .2s ease, box-shadow .2s ease;
-        }
-        .skill-card:hover .focusable-card,
-        .skill-card:focus-within .focusable-card {
-          transform: translateY(-3px) scale(1.03);
-          box-shadow: 0 8px 20px rgba(0,0,0,.10);
-        }
-      `}</style>
+      <style>
+        {`
+          .border-ring {
+            --thickness: 2px;
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: var(--thickness);
+            pointer-events: none;
+            background: linear-gradient(
+              135deg,
+              var(--c1),
+              var(--c2),
+              var(--c3)
+            );
+            -webkit-mask:
+              linear-gradient(#000 0 0) content-box,
+              linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+          }
 
-      <div className="container mx-auto px-5 md:px-10 max-w-screen-xl">
-        <div className="text-center mb-6">
+          .skill-card .focusable-card {
+            transition:
+              transform .2s ease,
+              box-shadow .2s ease;
+          }
+
+          .skill-card:hover .focusable-card,
+          .skill-card:focus-within .focusable-card {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,.10);
+          }
+        `}
+      </style>
+
+      <div className="container relative z-10 mx-auto max-w-screen-xl px-5 md:px-10">
+
+        <div
+          ref={headingRef}
+          className="mb-6 text-center"
+        >
           <h2
-            className={`section-title text-4xl md:text-6xl font-extrabold ${
+            className={`section-title mb-4 text-4xl font-extrabold md:text-6xl ${
               darkMode ? "text-white" : "text-gray-900"
-            } mb-4`}
+            }`}
           >
             <span className="relative inline-block">
-              Tech <span className="text-[#FF2D55]">Stack</span>
-              <span className="absolute -bottom-1 z-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" />
+              Tech{" "}
+              <span className="text-[#FF2D55]">
+                Stack
+              </span>
+
+              <span className="absolute -bottom-1 left-0 z-[1] mt-2 h-0.5 w-full bg-gradient-to-r from-transparent via-red-400 to-transparent" />
             </span>
           </h2>
+
           <p
             className={`section-subtitle text-lg ${
-              darkMode ? "text-gray-400" : "text-gray-600"
+              darkMode
+                ? "text-gray-400"
+                : "text-gray-600"
             }`}
           >
             Tools & tech that power the projects I build
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-12 md:mb-16">
+        <div
+          ref={tabsRef}
+          className="mb-12 flex justify-center md:mb-16"
+        >
           <div
-            className={`relative inline-flex rounded-full p-1 ${
+            className={`relative inline-flex rounded-full p-1 shadow-inner ${
               darkMode ? "bg-gray-800" : "bg-gray-100"
-            } shadow-inner`}
+            }`}
           >
             <button
-              ref={techTabRef}
               type="button"
-              className={`relative px-6 py-2 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${
+              onClick={() => setActiveTab("tech")}
+              className={`relative z-10 rounded-full px-6 py-2 text-sm font-medium transition-colors duration-200 ${
                 activeTab === "tech"
-                  ? "text-white bg-[#FF2D55]"
+                  ? "bg-[#FF2D55] text-white"
                   : darkMode
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-900"
               }`}
-              onClick={() => setActiveTab("tech")}
             >
               Technologies
             </button>
+
             <button
-              ref={toolsTabRef}
               type="button"
-              className={`relative px-6 py-2 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${
+              onClick={() => setActiveTab("tools")}
+              className={`relative z-10 rounded-full px-6 py-2 text-sm font-medium transition-colors duration-200 ${
                 activeTab === "tools"
-                  ? "text-white bg-[#FF2D55]"
+                  ? "bg-[#FF2D55] text-white"
                   : darkMode
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-900"
               }`}
-              onClick={() => setActiveTab("tools")}
             >
               Tools
             </button>
           </div>
         </div>
 
-        {/* Grid reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.18 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"
+        <div
+          ref={gridRef}
+          className="
+            grid
+            grid-cols-2
+            gap-4
+            sm:grid-cols-3
+            sm:gap-6
+            md:grid-cols-4
+            lg:grid-cols-5
+            xl:grid-cols-6
+          "
         >
           {skills
-            .filter((s) => s.type === activeTab)
+            .filter((skill) => skill.type === activeTab)
             .map((skill) => (
               <div
                 key={`${activeTab}-${skill.name}`}
-                className="skill-card relative group"
+                className="skill-card group relative"
               >
                 <div
                   tabIndex={0}
                   role="button"
                   aria-label={`Skill ${skill.name}`}
-                  className={`focusable-card relative isolate h-full flex flex-col items-center p-4 sm:p-5 rounded-xl ${
-                    darkMode ? "bg-gray-800" : "bg-white"
-                  } shadow-sm hover:shadow-md overflow-hidden`}
+                  className={`focusable-card relative isolate flex h-full flex-col items-center overflow-hidden rounded-xl p-4 shadow-sm hover:shadow-md sm:p-5 ${
+                    darkMode
+                      ? "bg-gray-800"
+                      : "bg-white"
+                  }`}
                   style={
                     {
-                      ["--c1" as any]: themeBorderStops[0],
-                      ["--c2" as any]: themeBorderStops[1],
-                      ["--c3" as any]: themeBorderStops[2],
-                    } as React.CSSProperties
+                      "--c1": themeBorderStops[0],
+                      "--c2": themeBorderStops[1],
+                      "--c3": themeBorderStops[2],
+                    } as CSSProperties
                   }
                 >
-                  <div className="absolute inset-0 rounded-xl z-0 border-ring" />
-                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 mb-3 sm:mb-4 flex items-center justify-center rounded-lg">
-                    {/* Glow */}
+                  <div className="border-ring absolute inset-0 z-0 rounded-xl" />
+
+                  <div className="relative mb-3 flex h-14 w-14 items-center justify-center rounded-lg sm:mb-4 sm:h-16 sm:w-16">
+
                     <span
                       className="absolute inset-0 rounded-lg opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-70"
                       style={{
@@ -320,23 +490,24 @@ const SkillsSection: React.FC = () => {
                       }}
                     />
 
-                    {/* Icon container */}
                     <div
-                      className={`relative z-10 w-full h-full flex items-center justify-center rounded-lg ${
-                        darkMode ? "bg-gray-700" : "bg-gray-100"
+                      className={`relative z-10 flex h-full w-full items-center justify-center rounded-lg ${
+                        darkMode
+                          ? "bg-gray-700"
+                          : "bg-gray-100"
                       }`}
                     >
                       <img
                         src={skill.icon}
                         alt={skill.name}
-                        className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+                        className="h-8 w-8 object-contain sm:h-10 sm:w-10"
                       />
                     </div>
                   </div>
                 </div>
               </div>
             ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

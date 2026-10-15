@@ -374,10 +374,27 @@ precision mediump float;
 uniform sampler2D uTexture;
 uniform vec2 uTextureSize;
 uniform vec2 uBoxSize;
+uniform vec2 uTexelSize;
+uniform float uHovered;
 varying vec2 vUv;
 ${COVER_FN}
 void main() {
-    gl_FragColor = texture2D(uTexture, coverUv(vUv, uTextureSize, uBoxSize));
+    vec2 uv = coverUv(vUv, uTextureSize, uBoxSize);
+    vec4 color = texture2D(uTexture, uv);
+    if (uHovered > 0.5) {
+        // Lightweight five-tap blur, only on the hovered ribbon item.
+        vec2 d = uTexelSize * 2.5;
+        color = color * 0.36
+          + texture2D(uTexture, uv + vec2(d.x, 0.0)) * 0.16
+          + texture2D(uTexture, uv - vec2(d.x, 0.0)) * 0.16
+          + texture2D(uTexture, uv + vec2(0.0, d.y)) * 0.16
+          + texture2D(uTexture, uv - vec2(0.0, d.y)) * 0.16;
+        // Desaturate strongly, then darken for readable white text.
+        float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+        color.rgb = mix(color.rgb, vec3(gray), 0.92);
+        color.rgb *= 0.62;
+    }
+    gl_FragColor = color;
 }`
 
 const BG_VERTEX = `
@@ -466,6 +483,8 @@ export default function CurvedRibbonGallery(props: Props) {
     const lastMoveTimeRef = useRef(0)
     const pointerDownRef = useRef({ x: 0, y: 0, moved: false, href: "" })
     const hoverHrefRef = useRef("")
+    const hoveredVirtualRef = useRef(-1)
+    const hoverOverlayRef = useRef<HTMLDivElement | null>(null)
 
     // visibility
     const isVisibleRef = useRef(true)
@@ -692,6 +711,8 @@ export default function CurvedRibbonGallery(props: Props) {
             const pCross = cfg.vertical ? lx : ly
             const half = Math.max(1, L.viewLen / 2)
             const sigma = Math.max(0.0001, cfg.bulgeWidth)
+            let hovered = -1
+            let hoveredHref = ""
             for (let v = 0; v < L.virtualCount; v++) {
                 const item = items[v % L.n]
                 if (!item.href) continue
@@ -711,10 +732,19 @@ export default function CurvedRibbonGallery(props: Props) {
                     Math.abs(pAlong - drawAlong) <=
                         (L.alongSize * (1 + (bulge - 1) * 0.55)) / 2 &&
                     Math.abs(pCross) <= (L.crossSize * bulge) / 2
-                )
-                    return item.href
+                ) {
+                    hovered = v
+                    hoveredHref = item.href
+                    break
+                }
             }
-            return ""
+            if (hoveredVirtualRef.current !== hovered) {
+                hoveredVirtualRef.current = hovered
+                needsRenderRef.current = true
+            }
+            const overlay = hoverOverlayRef.current
+            if (overlay) overlay.style.opacity = hovered >= 0 ? "1" : "0"
+            return hoveredHref
         },
         [enableLinks, source]
     )
@@ -811,6 +841,8 @@ export default function CurvedRibbonGallery(props: Props) {
                     uTexture: ru("uTexture"),
                     uTextureSize: ru("uTextureSize"),
                     uBoxSize: ru("uBoxSize"),
+                    uTexelSize: ru("uTexelSize"),
+                    uHovered: ru("uHovered"),
                 },
                 bu: {
                     uTextureA: bu("uTextureA"),
@@ -989,6 +1021,21 @@ export default function CurvedRibbonGallery(props: Props) {
             gl.uniform1f(r.ru.uBulgeWidth, cfg.bulgeWidth)
             let bound: WebGLTexture | null = null
             const cull = L.viewLen * 0.6 + L.alongSize * 2
+            const overlay = hoverOverlayRef.current
+            if (overlay && hoveredVirtualRef.current >= 0) {
+                const v = hoveredVirtualRef.current
+                const along = wrap(
+                    (v - L.centerIndex) * L.stride + scrollRef.current,
+                    -L.total / 2, L.total / 2
+                )
+                const n = along / Math.max(1, L.viewLen / 2)
+                const bulge = 1 + cfg.bulgeStrength * Math.exp(
+                    -(n * n) / (2 * Math.max(0.0001, cfg.bulgeWidth) ** 2)
+                )
+                const center = along + n * (bulge - 1) * L.alongSize * 0.9
+                overlay.style.left = `${width / 2 + (cfg.vertical ? 0 : center)}px`
+                overlay.style.top = `${height / 2 + (cfg.vertical ? center : 0)}px`
+            }
             for (let v = 0; v < L.virtualCount; v++) {
                 const along = wrap(
                     (v - L.centerIndex) * L.stride + scrollRef.current,
@@ -1000,9 +1047,11 @@ export default function CurvedRibbonGallery(props: Props) {
                 if (tex.texture !== bound) {
                     gl.bindTexture(gl.TEXTURE_2D, tex.texture)
                     gl.uniform2f(r.ru.uTextureSize, tex.width, tex.height)
+                    gl.uniform2f(r.ru.uTexelSize, 1 / tex.width, 1 / tex.height)
                     bound = tex.texture
                 }
                 gl.uniform1f(r.ru.uOffset, along)
+                gl.uniform1f(r.ru.uHovered, v === hoveredVirtualRef.current ? 1 : 0)
                 gl.drawElements(
                     gl.TRIANGLES,
                     mesh.indexCount,
@@ -1215,6 +1264,9 @@ export default function CurvedRibbonGallery(props: Props) {
     const onPointerDown = useCallback(
         (event: PointerEvent<HTMLDivElement>) => {
             if (event.pointerType === "mouse" && event.button !== 0) return
+            hoveredVirtualRef.current = -1
+            if (hoverOverlayRef.current) hoverOverlayRef.current.style.opacity = "0"
+            needsRenderRef.current = true
             pointerDownRef.current = {
                 x: event.clientX,
                 y: event.clientY,
@@ -1301,6 +1353,7 @@ export default function CurvedRibbonGallery(props: Props) {
                 )
             }
             draggingRef.current = false
+            needsRenderRef.current = true
             updateCursor()
         },
         [enableLinks, source, updateCursor]
@@ -1317,6 +1370,9 @@ export default function CurvedRibbonGallery(props: Props) {
     const onPointerLeave = useCallback(() => {
         if (draggingRef.current) return
         hoverHrefRef.current = ""
+        hoveredVirtualRef.current = -1
+        if (hoverOverlayRef.current) hoverOverlayRef.current.style.opacity = "0"
+        needsRenderRef.current = true
         updateCursor()
     }, [updateCursor])
 
@@ -1464,6 +1520,32 @@ export default function CurvedRibbonGallery(props: Props) {
                         touchAction,
                     }}
                 />
+            )}
+            {!useStatic && enableLinks && (
+                <div
+                    ref={hoverOverlayRef}
+                    aria-hidden="true"
+                    style={{
+                        position: "absolute",
+                        left: "50%",
+                        top: "50%",
+                        transform: "translate(-50%, -50%)",
+                        pointerEvents: "none",
+                        opacity: 0,
+                        transition: "opacity 200ms ease",
+                        zIndex: 2,
+                        whiteSpace: "nowrap",
+                        padding: 0,
+                        background: "transparent",
+                        color: "white",
+                        fontSize: 15,
+                        fontWeight: 600,
+                        letterSpacing: "0.01em",
+                        textShadow: "0 2px 8px rgba(0,0,0,0.7)",
+                    }}
+                >
+                    View Project Detail
+                </div>
             )}
         </div>
     )
