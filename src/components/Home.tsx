@@ -190,8 +190,8 @@ const HomeSection = () => {
     sm:h-[530px]
     md:h-[580px]
     lg:hidden
-    mt-12
-    sm:mt-14
+    mt-14
+    sm:mt-16
     overflow-hidden
     shrink-0
     pointer-events-auto
