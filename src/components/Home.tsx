@@ -188,7 +188,7 @@ const HomeSection = () => {
         className="
     relative z-20
     w-full
-    h-[600px]
+    h-[585px]
     sm:h-[600px]
     md:h-[650px]
     lg:hidden
