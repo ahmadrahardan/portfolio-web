@@ -181,17 +181,20 @@ const HomeSection = () => {
       />
 
       {/* MOBILE LANYARD: PALING ATAS */}
+
+      {/* MOBILE & TABLET LANYARD */}
       <div
         ref={lanyardRef}
         className="
     relative z-20
     w-full
-    h-[470px]
-    sm:h-[530px]
-    md:h-[580px]
+    h-[600px]
+    sm:h-[600px]
+    md:h-[650px]
     lg:hidden
-    mt-14
-    sm:mt-16
+    mt-4
+    mb-4
+    sm:mb-6
     overflow-hidden
     shrink-0
     pointer-events-auto
