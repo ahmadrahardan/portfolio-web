@@ -1,90 +1,132 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
-import profilePhoto from "../assets/RHD.jpg";
+import Lanyard from "./Lanyard";
 import cvPdf from "../assets/CV Ahmad Rahardan ATS.pdf";
 
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
-
 const HomeSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const lanyardRef = useRef<HTMLDivElement>(null);
+  const introTimelineRef = useRef<gsap.core.Timeline | null>(null);
+
   const { darkMode } = useTheme();
 
   const handleDownload = () => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = cvPdf;
-    link.download = 'CV Ahmad Rahardan.pdf';
+    link.download = "CV Ahmad Rahardan.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  // Animasi intro GSAP
   useEffect(() => {
-    if (!sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(
-        textRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9 }
-      ).fromTo(
-        photoRef.current,
-        { x: 40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.8 },
-        "-=0.7"
-      );
-    }, sectionRef);
-    return () => ctx.revert();
-  }, [darkMode]);
+    if (!sectionRef.current || !textRef.current) return;
 
-  useEffect(() => {
-    if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      gsap.to(photoRef.current, {
-        y: 16,
-        duration: 5,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
+      const textElements = Array.from(textRef.current!.children);
+
+      const timeline = gsap.timeline({
+        defaults: {
+          ease: "power3.out",
+        },
       });
+
+      // Animasi Lanyard pada mobile
+      if (lanyardRef.current) {
+        timeline.fromTo(
+          lanyardRef.current,
+          {
+            opacity: 0,
+            y: -35,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: "power2.out",
+          },
+        );
+      }
+
+      // Animasi teks masuk satu per satu
+      timeline.fromTo(
+        textElements,
+        {
+          opacity: 0,
+          y: 35,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
+          clearProps: "opacity,transform",
+        },
+        "-=0.5",
+      );
+
+      introTimelineRef.current = timeline;
     }, sectionRef);
-    return () => ctx.revert();
+
+    // Jalankan ulang animasi saat Navbar Home diklik
+    const replayIntro = () => {
+      const timeline = introTimelineRef.current;
+
+      if (!timeline) return;
+
+      timeline.restart();
+    };
+
+    window.addEventListener("portfolio-home-intro", replayIntro);
+
+    return () => {
+      window.removeEventListener("portfolio-home-intro", replayIntro);
+
+      introTimelineRef.current = null;
+      ctx.revert();
+    };
   }, []);
 
+  // Efek typewriter
   useEffect(() => {
     const toRotate = [
       "Information Systems Student",
       "Website Developer",
       "Tech Enthusiast",
     ];
+
     const period = 2000;
 
     let loopNum = 0;
     let txt = "";
     let isDeleting = false;
-    let typewriterTimeout: any;
-
-    const wrapClass = darkMode ? "text-[#FF2D55]" : "text-white";
-    const cursorClass = darkMode ? "text-white/80" : "text-white/90";
+    let typewriterTimeout: ReturnType<typeof setTimeout>;
 
     const tick = () => {
       const fullTxt = toRotate[loopNum % toRotate.length];
+
       txt = isDeleting
         ? fullTxt.substring(0, txt.length - 1)
         : fullTxt.substring(0, txt.length + 1);
 
-      const el = document.querySelector(".typewrite");
+      const el = sectionRef.current?.querySelector(".typewrite");
+
       if (el) {
-        (el as HTMLElement).innerHTML =
-          `<span class="wrap ${wrapClass}">${txt}</span>` +
-          `<span class="cursor ${cursorClass}">|</span>`;
+        const textSpan = el.querySelector(".typewrite-text");
+
+        if (textSpan) {
+          textSpan.textContent = txt;
+        }
       }
 
       let delta = 150 - Math.random() * 100;
-      if (isDeleting) delta /= 2;
+
+      if (isDeleting) {
+        delta /= 2;
+      }
 
       if (!isDeleting && txt === fullTxt) {
         delta = period;
@@ -99,104 +141,227 @@ const HomeSection = () => {
     };
 
     tick();
-    return () => clearTimeout(typewriterTimeout);
-  }, [darkMode]);
+
+    return () => {
+      clearTimeout(typewriterTimeout);
+    };
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       id="home"
-      className="relative isolate overflow-hidden flex items-center"
+      className="
+        relative isolate
+        min-h-[100svh]
+        lg:h-[100svh]
+        lg:min-h-[650px]
+        overflow-hidden
+        flex flex-col
+        lg:justify-center
+        bg-transparent
+      "
     >
+      {/* BACKGROUND GLOW */}
       <div
-        className={`absolute inset-0 -z-30 bg-gradient-to-br ${
-          darkMode
-            ? "from-[#0B1020] via-[#111B40] to-[#132A6E]"
-            : "from-[#d97706] via-[#dc2626] to-[#a21caf]"
-        }`}
-      />
-
-      <div
-        className="pointer-events-none absolute -z-20"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          inset: 0,
           background: darkMode
-            ? "radial-gradient(600px 420px at 85% 25%, rgba(236,72,153,0.55), transparent 60%), radial-gradient(700px 520px at 10% 80%, rgba(59,130,246,0.35), transparent 60%)"
-            : "radial-gradient(1000px 600px at 18% 28%, rgba(255,255,255,0.35), rgba(255,255,255,0.05) 60%, transparent 70%)",
+            ? `radial-gradient(
+                ellipse 55% 65% at 42% 42%,
+                rgba(75, 65, 175, 0.20),
+                transparent 75%
+              )`
+            : `radial-gradient(
+                ellipse 60% 60% at 40% 40%,
+                rgba(130, 150, 255, 0.12),
+                transparent 75%
+              )`,
         }}
       />
 
-      <div className="relative z-10 w-full px-6 sm:px-8 lg:px-[149px] py-36">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-y-10">
-          {/* LEFT: text (center on mobile) */}
+      {/* MOBILE LANYARD: PALING ATAS */}
+      <div
+        ref={lanyardRef}
+        className="
+    relative z-20
+    w-full
+    h-[470px]
+    sm:h-[530px]
+    md:h-[580px]
+    lg:hidden
+    mt-12
+    sm:mt-14
+    overflow-hidden
+    shrink-0
+    pointer-events-auto
+  "
+      >
+        <Lanyard />
+      </div>
+
+      {/* DESKTOP LANYARD: BACKGROUND */}
+      {/* DESKTOP LANYARD */}
+      <div
+        className="
+    hidden lg:block
+    absolute inset-0
+    z-0
+    overflow-hidden
+    pointer-events-auto
+  "
+      >
+        <Lanyard />
+      </div>
+
+      {/* CONTENT */}
+      <div
+        className="
+    relative z-10
+    w-full max-w-[1920px] mx-auto
+    px-6 sm:px-8 lg:px-[8%]
+    pb-16 pt-5 lg:py-16
+    lg:pointer-events-none
+  "
+      >
+        <div
+          className="
+            grid
+            grid-cols-1
+            lg:grid-cols-12
+            items-center
+            gap-y-10
+          "
+        >
+          {/* INTRO TEXT */}
           <div
             ref={textRef}
-            className="lg:col-span-6 flex flex-col items-center text-center lg:items-start lg:text-left"
+            className="
+    lg:col-span-6
+    flex flex-col
+    items-center text-center
+    lg:items-start lg:text-left
+    lg:pointer-events-auto
+  "
           >
-            <p className="mb-4 text-md sm:text-2xl tracking-[.18em] font-semibold text-white">
+            {/* GREETING */}
+            <p
+              className={`
+                mb-4
+                text-base
+                sm:text-2xl
+                tracking-[.18em]
+                font-semibold
+                ${darkMode ? "text-white" : "text-slate-900"}
+              `}
+            >
               HELLO THERE, I'M
             </p>
 
-            <h1 className="text-white font-extrabold leading-tight text-4xl sm:text-5xl md:text-7xl">
-              Ahmad Rahardan
+            {/* NAME */}
+            <h1
+              className={`
+                font-extrabold
+                leading-[1.1]
+                tracking-tight
+                text-4xl
+                sm:text-5xl
+                md:text-6xl
+                xl:text-7xl
+                ${darkMode ? "text-white" : "text-slate-900"}
+              `}
+            >
+              Ahmad <span className="text-[#FF2D55]">Rahardan</span>
             </h1>
 
-            <div className="mt-3 md:mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold">
-              <div className="typewrite h-[1.4em] mx-auto lg:mx-0 text-white" />
+            {/* TYPEWRITER */}
+            <div
+              className="
+                mt-3
+                md:mt-4
+                text-lg
+                sm:text-2xl
+                md:text-3xl
+                font-extrabold
+              "
+            >
+              <div
+                className="
+                  typewrite
+                  min-h-[1.4em]
+                  mx-auto
+                  lg:mx-0
+                "
+              >
+                <span className="typewrite-text text-[#FF2D55]" />
+
+                <span className={darkMode ? "text-white/80" : "text-black/70"}>
+                  |
+                </span>
+              </div>
             </div>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+            {/* DESCRIPTION */}
+            <p
+              className={`
+                mt-4
+                mb-4
+                text-sm
+                sm:text-base
+                md:text-lg
+                leading-relaxed
+                tracking-[.05em]
+                font-semibold
+                ${darkMode ? "text-slate-100" : "text-slate-600"}
+              `}
+            >
+              A highly motivated sixth-semester Information Systems student at
+              the Faculty of Computer Science, University of Jember with a
+              strong interest in information technology development.
+            </p>
+
+            {/* DOWNLOAD BUTTON */}
+            <div
+              className="
+                mt-5
+                flex
+                flex-wrap
+                items-center
+                justify-center
+                lg:justify-start
+                gap-3
+              "
+            >
               <button
                 onClick={handleDownload}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-lg font-medium
-                          bg-[#FF2D55] text-white shadow-lg hover:shadow-xl hover:bg-white hover:text-[#FF2D55] transition"
+                className="
+                  inline-flex
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-2xl
+                  px-5
+                  py-3
+                  text-base
+                  sm:text-lg
+                  font-medium
+                  bg-[#FF2D55]
+                  text-white
+                  shadow-lg
+                  transition-all
+                  duration-300
+                  hover:shadow-xl
+                  hover:bg-white
+                  hover:text-[#FF2D55]
+                  hover:-translate-y-1
+                "
               >
                 Download CV
               </button>
             </div>
           </div>
-
-          {/* RIGHT: photo (floating) */}
-          <div
-            ref={photoRef}
-            className="lg:col-span-6 flex justify-center lg:justify-end"
-          >
-            <div className="relative">
-              <div className="p-[6px] rounded-[26px] bg-gradient-to-br from-[#FF2D55] via-[#ff7ab7] to-[#2563eb]">
-                <div
-                  className={`rounded-[20px] overflow-hidden ${
-                    darkMode ? "bg-[#0F1530]" : "bg-white/10"
-                  }`}
-                >
-                  <img
-                    src={profilePhoto}
-                    alt="Profile"
-                    className="block w-[280px] h-[360px] sm:w-[320px] sm:h-[400px] md:w-[360px] md:h-[460px] object-cover"
-                  />
-                </div>
-              </div>
-              <div
-                className="pointer-events-none absolute -inset-2 rounded-[30px] opacity-50"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg at 50% 50%, rgba(255,45,85,0.55), rgba(59,130,246,0.45), rgba(255,45,85,0.55))",
-                  filter: "blur(24px)",
-                }}
-              />
-            </div>
-          </div>
         </div>
       </div>
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-5 md:h-8 z-[5]"
-        style={{
-          background: darkMode
-            ? 
-              "linear-gradient(to top, rgba(15,23,42,1) 0%, rgba(15,23,42,0.65) 45%, rgba(15,23,42,0) 100%)"
-            : 
-              "linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 100%)",
-        }}
-      />
     </section>
   );
 };

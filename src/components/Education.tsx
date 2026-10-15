@@ -1,218 +1,281 @@
+
+import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useReducedMotion,
+} from "framer-motion";
 import { useTheme } from "../context/ThemeContext";
 
-type Item = {
-  year: string;
-  desc1: string;
-  desc2: string;
-};
-
-const experience: Item[] = [
+const timeline = [
   {
-    year: "Dec 2024 - Present",
-    desc1: "Media and Technology Division Staff",
-    desc2: "Information Systems Student Association (HIMASIF)",
+    year: "2020-2023",
+    title: "Senior High School",
+    category: "Education",
+    description:
+      "My high school journey, where I developed academic knowledge, creativity, discipline, and teamwork.",
   },
   {
-    year: "Aug 2025 - Oct 2025",
-    desc1: "Website Division Staff",
-    desc2: "Ilkom Developer League (IDLe) 2025",
-  },
-  {
-    year: "Feb 2025 - Sep 2025",
-    desc1: "Secretariat Division Staff",
-    desc2: "IT-CONVERT & PICTURE 2025",
-  },
-  {
-    year: "Jul 2025 - Oct 2025",
-    desc1: "Head of Publication, Decoration, and Documentation Committee",
-    desc2: "Increase the Horizon of Information System (INHOFIS) 2025 & Sarasehan 2025",
+    year: "2023-Present",
+    title: "University of Jember",
+    category: "Education",
+    description:
+      "Studying Information Systems at the University of Jember, focusing on web development, UI/UX design, and technology.",
   },
 ];
 
-const education: Item[] = [
-  {
-    year: "2020 - 2023",
-    desc1: "Senior High School 1 Jember",
-    desc2: "Science & Math",
-  },
-  {
-    year: "2023 - Present",
-    desc1: "University of Jember",
-    desc2: "Bachelor of Information Systems (in progress)",
-  },
-];
+type TimelineItem = (typeof timeline)[number];
 
-const Card = ({ item }: { item: Item }) => {
-  const { darkMode } = useTheme();
+function TimelineCard({
+  item,
+  index,
+  darkMode,
+}: {
+  item: TimelineItem;
+  index: number;
+  darkMode: boolean;
+}) {
+  const reduceMotion = useReducedMotion();
+
+  // SMA di kanan, UNEJ di kiri
+  const isRight = index % 2 === 0;
 
   return (
-    <div
-      className={`rounded-xl p-5 transition
-        ${
-          darkMode
-            ? "bg-gradient-to-br from-white/5 to-white/0 border border-white/10 hover:border-[#FF2D55]/40"
-            : "bg-white border border-gray-200 hover:border-[#FF2D55]/40"
-        }
-      `}
-    >
-      <p className="text-xs uppercase text-[#FF2D55] mb-1">{item.year}</p>
-      <h4
-        className={`${darkMode ? "text-white" : "text-slate-900"} font-semibold`}
+    <div className="relative grid grid-cols-[32px_minmax(0,1fr)] gap-x-5 md:grid-cols-[minmax(0,1fr)_72px_minmax(0,1fr)] md:gap-x-5">
+      {/* Kolom kiri pada desktop */}
+      <div
+        className={`hidden md:block ${
+          isRight ? "pt-3 text-right" : ""
+        }`}
       >
-        {item.desc1}
-      </h4>
-      <p
-        className={`${darkMode ? "text-slate-400" : "text-slate-600"} text-sm`}
-      >
-        {item.desc2}
-      </p>
+        {isRight ? (
+          <motion.span
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5 }}
+            className={`text-lg font-semibold ${
+              darkMode ? "text-slate-300" : "text-slate-600"
+            }`}
+          >
+            {item.year}
+          </motion.span>
+        ) : (
+          <CardContent
+            item={item}
+            darkMode={darkMode}
+            isRight={false}
+            reduceMotion={!!reduceMotion}
+          />
+        )}
+      </div>
+
+      {/* Titik timeline */}
+      <div className="relative flex justify-center pt-5">
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0.4 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.4 }}
+          className="relative z-10 h-4 w-4 rounded-full border-[3px] border-[#FF2D55] bg-[#FF2D55] shadow-[0_0_0_7px_rgba(255,45,85,0.12)]"
+        />
+      </div>
+
+      {/* Kolom kanan pada desktop, semua kartu di kanan pada mobile */}
+      <div className="min-w-0">
+        <div className="md:hidden">
+          <CardContent
+            item={item}
+            darkMode={darkMode}
+            isRight
+            reduceMotion={!!reduceMotion}
+          />
+        </div>
+
+        <div className="hidden md:block">
+          {isRight ? (
+            <CardContent
+              item={item}
+              darkMode={darkMode}
+              isRight
+              reduceMotion={!!reduceMotion}
+            />
+          ) : (
+            <motion.span
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5 }}
+              className={`inline-block pt-3 text-lg font-semibold ${
+                darkMode ? "text-slate-300" : "text-slate-600"
+              }`}
+            >
+              {item.year}
+            </motion.span>
+          )}
+        </div>
+      </div>
     </div>
   );
-};
+}
 
-const ExperienceEducationSection = () => {
+function CardContent({
+  item,
+  darkMode,
+  isRight,
+  reduceMotion,
+}: {
+  item: TimelineItem;
+  darkMode: boolean;
+  isRight: boolean;
+  reduceMotion: boolean;
+}) {
+  return (
+    <motion.article
+      initial={
+        reduceMotion
+          ? false
+          : {
+              opacity: 0,
+              x: isRight ? 35 : -35,
+              y: 20,
+              scale: 0.95,
+              filter: "blur(5px)",
+            }
+      }
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        filter: "blur(0px)",
+      }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className={`relative min-w-0 rounded-2xl border p-6 shadow-xl md:p-8 ${
+        darkMode
+          ? "border-white/10 bg-[#1D2338]/90 text-white shadow-black/20"
+          : "border-slate-200 bg-white/90 text-slate-900 shadow-slate-200/40"
+      }`}
+    >
+      {/* Segitiga mengarah ke garis timeline */}
+      <div
+        className={`absolute top-5 h-3.5 w-3.5 rotate-45 border ${
+          isRight
+            ? "-left-[8px] border-r-0 border-t-0"
+            : "-right-[8px] border-b-0 border-l-0"
+        } ${
+          darkMode
+            ? "border-white/10 bg-[#1D2338]"
+            : "border-slate-200 bg-white"
+        }`}
+      />
+
+      <span className="mb-3 block text-sm font-bold text-[#FF2D55] md:hidden">
+        {item.year}
+      </span>
+
+      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF2D55]">
+        {item.category}
+      </span>
+
+      <h3 className="mt-4 text-xl font-bold leading-tight md:text-2xl">
+        {item.title}
+      </h3>
+
+      <div className="my-5 h-[2px] w-12 rounded-full bg-[#FF2D55]" />
+
+      <p
+        className={`text-sm leading-7 md:text-base ${
+          darkMode ? "text-slate-300" : "text-slate-600"
+        }`}
+      >
+        {item.description}
+      </p>
+    </motion.article>
+  );
+}
+
+export default function Education() {
   const { darkMode } = useTheme();
+  const timelineRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 75%", "end 75%"],
+  });
+
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001,
+  });
 
   return (
     <section
       id="education"
-      className={`${
-        darkMode ? "bg-gray-900" : "bg-white"
-      } pt-24 pb-20 relative transition-colors duration-500`}
+      className="relative overflow-hidden bg-transparent px-5 py-24 md:px-10 md:py-32"
     >
-      {/* ======= CORNER GLOWS ======= */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <style>{`
-    .about-glow{
-      position:absolute;
-      width:28rem;height:28rem;
-      filter:blur(40px);
-      opacity:.30;
-      will-change:transform,opacity;
-      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
-    }
-    @media (min-width:768px){
-      .about-glow{width:44rem;height:44rem}
-    }
-  `}</style>
+      <div className="mx-auto max-w-5xl">
+        {/* Heading */}
+        <div className="mb-20 text-center">
 
-        {/* top-left */}
-        <span
-          className="about-glow"
-          style={{
-            left: "-20rem",
-            top: "5rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(255,45,85,0.9)"
-              : "rgba(255,45,85,0.6)",
-          }}
-        />
-        {/* top-right */}
-        {/* <span
-          className="about-glow"
-          style={{
-            right: "-10rem",
-            top: "-20rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(168,85,247,0.8)"
-              : "rgba(168,85,247,0.55)",
-          }}
-        /> */}
-        {/* bottom-left */}
-        {/* <span
-          className="about-glow"
-          style={{
-            left: "-14rem",
-            bottom: "-18rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(59,130,246,0.85)"
-              : "rgba(59,130,246,0.5)",
-          }}
-        /> */}
-        {/* bottom-right */}
-        {/* <span
-          className="about-glow"
-          style={{
-            right: "-20rem",
-            bottom: "-1rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(59,130,246,0.85)"
-              : "rgba(59,130,246,0.5)",
-          }}
-        /> */}
-      </div>
-      {/* ======= /CORNER GLOWS ======= */}
-
-      <div className="mx-auto max-w-screen-xl px-5 md:px-10">
-        {/* TITLE */}
-        {/* <div className="text-center mb-16">
-          <h2
-            className={`text-4xl sm:text-6xl font-extrabold mb-3 ${
+          <motion.h2
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className={`mt-4 text-4xl font-extrabold md:text-6xl ${
               darkMode ? "text-white" : "text-slate-900"
             }`}
           >
             <span className="relative inline-block">
-              My{" "}
-              <span className="text-[#FF2D55]">Journey</span>
-              <span className="absolute -bottom-1 z-[-1] left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" />
-            </span>
-          </h2>
+                Education
+                <span className="absolute -bottom-1 z-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" />
+              </span>
+          </motion.h2>
 
           <p
-            className={`text-lg ${
-              darkMode ? "text-slate-400" : "text-slate-600"
+            className={`mx-auto mt-5 max-w-xl text-base ${
+              darkMode ? "text-slate-400" : "text-slate-500"
             }`}
           >
-            Experience & Education
+            A journey through education and personal growth.
           </p>
-        </div> */}
+        </div>
 
-        {/* CONTENT */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
-          {/* EDUCATION */}
-          <div>
-            <h3
-              className={`text-center md:text-left text-2xl sm:text-3xl font-bold mb-6 ${
-                darkMode ? "text-white" : "text-slate-900"
-              }`}
-            >
-              <span className="relative inline-block">
-                My <span className="text-[#FF2D55]">Education</span>
-                {/* <span className="absolute -bottom-1 z-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" /> */}
-              </span>
-            </h3>
-            <div className="space-y-4">
-              {education.map((item, i) => (
-                <Card key={i} item={item} />
-              ))}
-            </div>
-          </div>
+        <div ref={timelineRef} className="relative">
+          <div
+            className={`absolute bottom-0 left-[16px] top-0 w-[2px] md:left-1/2 md:-translate-x-1/2 ${
+              darkMode ? "bg-white/15" : "bg-slate-300"
+            }`}
+          />
 
-          {/* EXPERIENCE */}
-          <div>
-            <h3
-              className={`text-center md:text-left text-2xl sm:text-3xl font-bold mb-6 ${
-                darkMode ? "text-white" : "text-slate-900"
-              }`}
-            >
-              <span className="relative inline-block">
-                My{" "}
-                <span className="text-[#FF2D55]">
-                  Organizational Experience
-                </span>
-                {/* <span className="absolute -bottom-1 z-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" /> */}
-              </span>
-            </h3>
-            <div className="space-y-4">
-              {experience.map((item, i) => (
-                <Card key={i} item={item} />
-              ))}
-            </div>
+          {/* Garis pink mengikuti scroll */}
+          <motion.div
+            style={{
+              scaleY,
+              transformOrigin: "top",
+            }}
+            className="absolute bottom-0 left-[16px] top-0 w-[2px] bg-[#FF2D55] md:left-1/2 md:-translate-x-1/2"
+          />
+
+          <div className="relative space-y-24 md:space-y-36">
+            {timeline.map((item, index) => (
+              <TimelineCard
+                key={item.year}
+                item={item}
+                index={index}
+                darkMode={darkMode}
+              />
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default ExperienceEducationSection;
+}

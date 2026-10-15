@@ -1,212 +1,339 @@
+
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../context/ThemeContext";
-import fotoFormalku from "../assets/Rahar_3.png";
+import fotoFormalku from "../assets/RHD.jpg";
+import PixelHoverCard from "./PixelHoverCard";
+import fotoKedua from "../assets/Rahar_2.png";
+import { motion } from "framer-motion";
 
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 const AboutSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
   const { darkMode } = useTheme();
 
-  const hexClip = "polygon(25% 6%, 75% 6%, 94% 50%, 75% 94%, 25% 94%, 6% 50%)";
-
-  const hexGrad = darkMode
-    ? "from-[#FF2D55] via-[#ff7ab7] to-[#2563eb]"
-    : "from-[#d97706] via-[#dc2626] to-[#a21caf]";
+  const passions = [
+    {
+      label: "Front-end",
+      color: "text-red-400",
+      border: "border-red-400/30",
+      background: "bg-red-500/10",
+    },
+    {
+      label: "System Analyst",
+      color: "text-purple-400",
+      border: "border-purple-400/30",
+      background: "bg-purple-500/10",
+    },
+  ];
 
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      const tl = gsap.timeline({
+        defaults: {
+          ease: "power3.out",
+        },
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          once: true,
+        },
+      });
 
-      // Foto masuk dari kiri
-      tl.fromTo(
-        photoRef.current,
-        { x: -40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.0 },
-      );
-
-      // Konten teks stagger
-      if (contentRef.current) {
-        tl.from(
-          Array.from(contentRef.current.children),
-          { y: 24, opacity: 0, duration: 0.9, stagger: 0.12 },
-          "-=0.8",
+      // Animasi foto masuk dari kiri
+      if (photoRef.current) {
+        tl.fromTo(
+          photoRef.current,
+          {
+            x: -40,
+            opacity: 0,
+          },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+          }
         );
       }
 
-      // Bobbing lembut pada foto
-      gsap.to(photoRef.current, {
-        y: 12,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      // Animasi konten selain heading About Me
+      if (contentRef.current) {
+        const elements = Array.from(
+          contentRef.current.children
+        ).filter(
+          (element) =>
+            !element.classList.contains("about-heading")
+        );
 
-      // Napas lembut untuk glow sudut
-      gsap.to(".about-glow", {
-        opacity: (i) => 0.25 + (i % 2 ? 0.15 : 0.1),
-        scale: 1.06,
-        duration: 4,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        stagger: { each: 0.4, from: "random" },
-      });
+        tl.fromTo(
+          elements,
+          {
+            y: 24,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.12,
+            clearProps: "transform,opacity",
+          },
+          "-=0.8"
+        );
+      }
+
+      // Efek foto bergerak naik turun
+      if (photoRef.current) {
+        gsap.to(photoRef.current, {
+          y: 12,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [darkMode]);
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       id="aboutme"
-      className={`${
-        darkMode ? "bg-gray-900" : "bg-white"
-      } relative overflow-hidden pb-16 pt-28 flex items-center justify-center transition-colors duration-500`}
+      className="
+        relative
+        overflow-hidden
+        pb-16
+        pt-28
+        flex
+        items-center
+        justify-center
+        transition-colors
+        duration-500
+        bg-transparent
+      "
     >
-      {/* ======= CORNER GLOWS ======= */}
-      <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
-        <style>{`
-    .about-glow{
-      position:absolute;
-      width:28rem;height:28rem;
-      filter:blur(40px);
-      opacity:.30;
-      will-change:transform,opacity;
-      background:radial-gradient(closest-side,var(--glowColor) 0%, rgba(0,0,0,0) 70%);
-    }
-    @media (min-width:768px){
-      .about-glow{width:44rem;height:44rem}
-    }
-  `}</style>
+      {/* CORNER GLOW */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <style>
+          {`
+            .about-glow {
+              position: absolute;
+              width: 28rem;
+              height: 28rem;
+              filter: blur(40px);
+              opacity: 0.30;
+              will-change: transform, opacity;
+              background: radial-gradient(
+                closest-side,
+                var(--glowColor) 0%,
+                rgba(0, 0, 0, 0) 70%
+              );
+            }
 
-        {/* top-left */}
+            @media (min-width: 768px) {
+              .about-glow {
+                width: 44rem;
+                height: 44rem;
+              }
+            }
+          `}
+        </style>
+
         <span
           className="about-glow"
-          style={{
-            left: "-20rem",
-            top: "-5rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(255,45,85,0.9)"
-              : "rgba(255,45,85,0.6)",
-          }}
-        />
-        {/* top-right */}
-        {/* <span
-          className="about-glow"
-          style={{
-            right: "-20rem",
-            top: "-7rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(255,45,85,0.9)"
-              : "rgba(255,45,85,0.6)",
-          }}
-        /> */}
-        {/* bottom-left */}
-        {/* <span
-          className="about-glow"
-          style={{
-            left: "-20rem",
-            bottom: "-5rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(59,130,246,0.85)"
-              : "rgba(59,130,246,0.5)",
-          }}
-        /> */}
-        {/* bottom-right */}
-        <span
-          className="about-glow"
-          style={{
-            right: "-20rem",
-            bottom: "-5rem",
-            ["--glowColor" as any]: darkMode
-              ? "rgba(255,45,85,0.9)"
-              : "rgba(255,45,85,0.6)",
-          }}
+          style={
+            {
+              right: "-25rem",
+              bottom: "-1rem",
+              "--glowColor": darkMode
+                ? "rgba(255,45,85,0.9)"
+                : "rgba(255,45,85,0.6)",
+            } as React.CSSProperties
+          }
         />
       </div>
-      {/* ======= /CORNER GLOWS ======= */}
 
-      <div className="mx-auto max-w-screen-xl px-5 md:px-10">
+      {/* MAIN CONTAINER */}
+      <div className="relative z-10 mx-auto w-full max-w-screen-xl px-5 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-          {/* FOTO – hexagon dengan gradient dinamis */}
+
+          {/* FOTO PROFIL */}
           <div
             ref={photoRef}
-            className="md:col-span-5 flex justify-center md:justify-start will-change-transform"
+            className="
+              md:col-span-5
+              flex
+              justify-center
+              md:justify-start
+              will-change-transform
+            "
           >
-            <div className="relative w-[400px] h-[360px] sm:w-[420px] sm:h-[380px] md:w-[500px] md:h-[430px]">
-              {/* Border hexagon */}
-              <div
-                className={`absolute inset-0 p-[8px] bg-gradient-to-tr ${hexGrad}`}
-                style={{
-                  clipPath: hexClip,
-                  borderRadius: 24,
-                  filter: "drop-shadow(0 0 20px rgba(0,0,0,.25))",
-                }}
-              />
-              {/* Isi hexagon + foto */}
-              <div
-                className={`${
-                  darkMode ? "bg-slate-900" : "bg-white"
-                } absolute inset-[8px] overflow-hidden`}
-                style={{ clipPath: hexClip, borderRadius: 20 }}
-              >
-                <img
-                  src={fotoFormalku}
-                  alt="Profile"
-                  className="w-full h-full object-cover object-top"
-                />
-                {/* Vignette halus */}
-                <div
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "radial-gradient(80% 60% at 50% 20%, transparent, rgba(0,0,0,.15) 70%)",
-                  }}
-                />
-              </div>
-            </div>
+            <PixelHoverCard
+              image={fotoFormalku}
+              hoverImage={fotoKedua}
+              darkMode={darkMode}
+              alt="Foto profil Rahar"
+            />
           </div>
 
-          {/* TEKS */}
+          {/* KONTEN ABOUT ME */}
           <div
             ref={contentRef}
-            className="md:col-span-7 text-center md:text-left"
+            className="
+              md:col-span-7
+              text-center
+              md:text-left
+            "
           >
-            <h2
-              className={`text-4xl sm:text-6xl font-extrabold mb-3 ${
-                darkMode ? "text-white" : "text-slate-900"
-              }`}
+            {/* HEADING ABOUT ME */}
+            <motion.h2
+              initial={{
+                opacity: 0,
+                y: 25,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.1,
+              }}
+              transition={{
+                duration: 0.7,
+                delay: 0.1,
+                ease: "easeOut",
+              }}
+              className={`
+                about-heading
+                mt-4
+                text-4xl
+                font-extrabold
+                md:text-6xl
+                ${
+                  darkMode
+                    ? "text-white"
+                    : "text-slate-900"
+                }
+              `}
             >
               <span className="relative inline-block">
-              About <span className="text-[#FF2D55]">Me</span>
-              <span className="absolute -bottom-1 z-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-red-400 to-transparent mt-2" />
-            </span>
-            </h2>
+                About{" "}
+                <span className="text-[#FF2D55]">
+                  Me
+                </span>
 
+                {/* Garis gradient bawah heading */}
+                <span
+                  className="
+                    absolute
+                    -bottom-1
+                    left-0
+                    w-full
+                    h-0.5
+                    bg-gradient-to-r
+                    from-transparent
+                    via-red-400
+                    to-transparent
+                  "
+                />
+              </span>
+            </motion.h2>
+
+            {/* SUBTITLE */}
             <h3
-              className={`text-2xl sm:text-3xl font-semibold mb-5 ${
-                darkMode ? "text-white" : "text-slate-900"
-              }`}
+              className={`
+                text-xl
+                sm:text-2xl
+                font-semibold
+                mt-2
+                mb-5
+                ${
+                  darkMode
+                    ? "text-white"
+                    : "text-slate-900"
+                }
+              `}
             >
               Step into my journey!
             </h3>
 
+            {/* DESCRIPTION */}
             <p
-              className={`${
-                darkMode ? "text-slate-300" : "text-slate-600"
-              } leading-8 max-w-4xl text-md sm:text-xl`}
+              className={`
+                leading-7
+                max-w-2xl
+                text-base
+                sm:text-lg
+                tracking-[.05em]
+                ${
+                  darkMode
+                    ? "text-slate-300"
+                    : "text-slate-600"
+                }
+              `}
             >
-              A highly motivated sixth-semester Information Systems student at the Faculty of Computer Science, University of Jember (GPA 3.96) with a strong interest in information technology development. Experienced in building web applications using Laravel, Blade, React, and Tailwind, as well as managing databases with MySQL. Possesses strong teamwork, communication, and problem-solving skills.
+              A highly motivated sixth-semester Information
+              Systems student at the Faculty of Computer
+              Science, University of Jember (GPA 3.96)
+              with a strong interest in information
+              technology development. Experienced in
+              building web applications using Laravel,
+              Blade, React, and Tailwind, as well as
+              managing databases with MySQL. Possesses
+              strong teamwork, communication, and
+              problem-solving skills.
             </p>
+
+            {/* PASSION BADGES */}
+            <div
+              className="
+                mt-8
+                flex
+                flex-wrap
+                justify-center
+                gap-3
+                md:justify-start
+              "
+            >
+              {passions.map((passion) => (
+                <span
+                  key={passion.label}
+                  className={`
+                    inline-flex
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    px-5
+                    py-2.5
+                    text-sm
+                    sm:text-base
+                    font-semibold
+                    whitespace-nowrap
+                    transition-all
+                    duration-300
+                    hover:-translate-y-1
+                    hover:scale-105
+                    cursor-default
+                    ${passion.color}
+                    ${passion.border}
+                    ${passion.background}
+                  `}
+                >
+                  {passion.label}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

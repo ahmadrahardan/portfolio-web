@@ -80,14 +80,24 @@ const ThemeToggle: React.FC<{
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("home");
+  const [activeLink, setActiveLink] = useState(() => {
+    const saved = sessionStorage.getItem("portfolio-active-section");
+    const hash = window.location.hash.replace("#", "");
+
+    if (NAV_ITEMS.some((item) => item.id === hash)) {
+      return hash;
+    }
+
+    return NAV_ITEMS.some((item) => item.id === saved) ? saved! : "home";
+  });
+
   const { darkMode, toggleDarkMode } = useTheme();
 
   const toggleMenu = () => setIsOpen((s) => !s);
 
   const handleLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    link: string
+    link: string,
   ) => {
     e.preventDefault();
     setActiveLink(link);
@@ -98,7 +108,13 @@ const Navbar: React.FC = () => {
     }
 
     if (link === "home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      window.dispatchEvent(new Event("portfolio-home-intro"));
+
       return;
     }
 
@@ -109,27 +125,42 @@ const Navbar: React.FC = () => {
   };
 
   // Observer untuk highlight nav
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActiveLink(e.target.id);
-        });
-      },
-      {
-        root: null,
-        // top dikurangi tinggi navbar, supaya highlight terasa pas saat bagian atas
-        rootMargin: `-${NAVBAR_HEIGHT}px 0px -55% 0px`,
-        threshold: 0,
-      }
-    );
 
-    NAV_ITEMS.forEach((item) => {
-      const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
+  useEffect(() => {
+    const updateActiveSection = () => {
+      const scrollPosition = window.scrollY + NAVBAR_HEIGHT + 100;
+
+      let currentSection = "home";
+
+      NAV_ITEMS.forEach((item) => {
+        const section = document.getElementById(item.id);
+
+        if (section) {
+          const sectionTop =
+            section.getBoundingClientRect().top + window.scrollY;
+
+          if (sectionTop <= scrollPosition) {
+            currentSection = item.id;
+          }
+        }
+      });
+
+      // Update Navbar dan simpan section aktif
+      setActiveLink(currentSection);
+
+      sessionStorage.setItem("portfolio-active-section", currentSection);
+    };
+
+    // Deteksi saat pengguna scroll
+    window.addEventListener("scroll", updateActiveSection, {
+      passive: true,
     });
 
-    return () => observer.disconnect();
+    // Jangan langsung menjalankan updateActiveSection
+    // saat mount karena scroll mungkin sedang dipulihkan.
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+    };
   }, []);
 
   return (
@@ -142,7 +173,7 @@ const Navbar: React.FC = () => {
       <div className="mx-auto max-w-screen-xl px-6 sm:px-1 lg:px-1">
         <div className="flex justify-between items-center h-16">
           {/* Brand */}
-          
+
           {/* <a
             href="#home"
             className="flex items-center gap-4"
@@ -185,8 +216,8 @@ const Navbar: React.FC = () => {
                     ? "text-white"
                     : "text-gray-900"
                   : darkMode
-                  ? "text-gray-300 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900";
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900";
                 return (
                   <li key={item.id} className="relative">
                     <a
@@ -270,8 +301,8 @@ const Navbar: React.FC = () => {
                   ? "text-white"
                   : "text-gray-900"
                 : darkMode
-                ? "text-gray-300 hover:text-white"
-                : "text-gray-600 hover:text-gray-900";
+                  ? "text-gray-300 hover:text-white"
+                  : "text-gray-600 hover:text-gray-900";
               return (
                 <a
                   key={item.id}

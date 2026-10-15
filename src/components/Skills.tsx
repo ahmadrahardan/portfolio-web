@@ -133,9 +133,7 @@ const SkillsSection: React.FC = () => {
   return (
     <section
       id="skills"
-      className={`pb-20 pt-20 relative ${
-        darkMode ? "bg-gray-900" : "bg-white"
-      } transition-colors duration-500`}
+      className={`pb-20 pt-20 relative bg-transparent transition-colors duration-500`}
     >
       {/* ======= CORNER GLOWS ======= */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -190,7 +188,7 @@ const SkillsSection: React.FC = () => {
         <span
           className="about-glow"
           style={{
-            right: "-20rem",
+            right: "-25rem",
             bottom: "-1rem",
             ["--glowColor" as any]: darkMode
               ? "rgba(255,45,85,0.9)"
